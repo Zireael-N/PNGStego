@@ -26,7 +26,7 @@ PNGStego has been tested with [StegExpose](https://github.com/b3dk7/StegExpose),
 Even with `threshold` as low as **0.05**. The default value is **0.20** and the author recommends using **0.15** to reduce false negatives.
 Sadly, I couldn't build [stegdetect](https://github.com/abeluck/stegdetect).
 
-To be use the program properly, please check the recommendations at the end of this Readme.
+To be sure that you use the program properly, please check the recommendations at the end of this Readme.
 
 ## Why?
 There are [countries](https://en.wikipedia.org/wiki/Key_disclosure_law) where one may be forced to provide either keys or decrypted information, there may be countries where using encryption is illegal. 
