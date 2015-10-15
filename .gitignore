@@ -1,0 +1,32 @@
+/*
+!/.gitignore
+!./gitattributes
+!/Makefile
+!/Makefile.mingw
+!/README.md
+!/LICENSE.md
+
+!/src/
+/src/*
+!/src/*.cpp
+
+!/include/
+/include/*
+!/include/*.h
+
+# Ignore everything but the solution and projects
+!/msvc/
+/msvc/*
+!/msvc/PNGStego.sln
+!/msvc/PNGStego.vcxproj
+!/msvc/PNGDeStego.vcxproj
+
+# Same for Xcode
+!/xcode/
+/xcode/*
+!/xcode/PNGStego.xcodeproj/
+/xcode/PNGStego.xcodeproj/*
+!/xcode/PNGStego.xcodeproj/project.pbxproj
+!/xcode/PNGStego.xcodeproj/project.xcworkspace/
+/xcode/PNGStego.xcodeproj/project.xcworkspace/*
+!/xcode/PNGStego.xcodeproj/project.xcworkspace/contents.xcworkspacedata

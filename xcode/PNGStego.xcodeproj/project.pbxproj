@@ -1,0 +1,427 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		014BE8F01BCB010E00C3DA70 /* byteencryption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EB1BCB010E00C3DA70 /* byteencryption.cpp */; settings = {ASSET_TAGS = (); }; };
+		014BE8F11BCB010E00C3DA70 /* bz2compression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EC1BCB010E00C3DA70 /* bz2compression.cpp */; settings = {ASSET_TAGS = (); }; };
+		014BE8F21BCB010E00C3DA70 /* helperfunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8ED1BCB010E00C3DA70 /* helperfunctions.cpp */; settings = {ASSET_TAGS = (); }; };
+		014BE8F31BCB010E00C3DA70 /* main-stego.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EE1BCB010E00C3DA70 /* main-stego.cpp */; settings = {ASSET_TAGS = (); }; };
+		014BE8F41BCB010E00C3DA70 /* pngwrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EF1BCB010E00C3DA70 /* pngwrapper.cpp */; settings = {ASSET_TAGS = (); }; };
+		018525C11BCB056F003484E8 /* main-destego.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 018525BF1BCB0566003484E8 /* main-destego.cpp */; settings = {ASSET_TAGS = (); }; };
+		018525C21BCB0577003484E8 /* byteencryption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EB1BCB010E00C3DA70 /* byteencryption.cpp */; settings = {ASSET_TAGS = (); }; };
+		018525C31BCB0577003484E8 /* bz2compression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EC1BCB010E00C3DA70 /* bz2compression.cpp */; settings = {ASSET_TAGS = (); }; };
+		018525C41BCB0577003484E8 /* helperfunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8ED1BCB010E00C3DA70 /* helperfunctions.cpp */; settings = {ASSET_TAGS = (); }; };
+		018525C51BCB057C003484E8 /* pngwrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EF1BCB010E00C3DA70 /* pngwrapper.cpp */; settings = {ASSET_TAGS = (); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		018525B61BCB052E003484E8 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		01E3A8D01BCAFFB600BB393C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		014BE8E71BCB00F200C3DA70 /* byteencryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = byteencryption.h; path = ../include/byteencryption.h; sourceTree = "<group>"; };
+		014BE8E81BCB00F200C3DA70 /* bz2compression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bz2compression.h; path = ../include/bz2compression.h; sourceTree = "<group>"; };
+		014BE8E91BCB00F200C3DA70 /* helperfunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = helperfunctions.h; path = ../include/helperfunctions.h; sourceTree = "<group>"; };
+		014BE8EA1BCB00F200C3DA70 /* pngwrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pngwrapper.h; path = ../include/pngwrapper.h; sourceTree = "<group>"; };
+		014BE8EB1BCB010E00C3DA70 /* byteencryption.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = byteencryption.cpp; path = ../src/byteencryption.cpp; sourceTree = "<group>"; };
+		014BE8EC1BCB010E00C3DA70 /* bz2compression.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = bz2compression.cpp; path = ../src/bz2compression.cpp; sourceTree = "<group>"; };
+		014BE8ED1BCB010E00C3DA70 /* helperfunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = helperfunctions.cpp; path = ../src/helperfunctions.cpp; sourceTree = "<group>"; };
+		014BE8EE1BCB010E00C3DA70 /* main-stego.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "main-stego.cpp"; path = "../src/main-stego.cpp"; sourceTree = "<group>"; };
+		014BE8EF1BCB010E00C3DA70 /* pngwrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pngwrapper.cpp; path = ../src/pngwrapper.cpp; sourceTree = "<group>"; };
+		018525B81BCB052E003484E8 /* PNGDestego */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PNGDestego; sourceTree = BUILT_PRODUCTS_DIR; };
+		018525BF1BCB0566003484E8 /* main-destego.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "main-destego.cpp"; path = "../src/main-destego.cpp"; sourceTree = "<group>"; };
+		01E3A8D21BCAFFB600BB393C /* PNGStego */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PNGStego; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		018525B51BCB052E003484E8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		01E3A8CF1BCAFFB600BB393C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		014BE8E51BCB00C700C3DA70 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				018525BF1BCB0566003484E8 /* main-destego.cpp */,
+				014BE8EB1BCB010E00C3DA70 /* byteencryption.cpp */,
+				014BE8EC1BCB010E00C3DA70 /* bz2compression.cpp */,
+				014BE8ED1BCB010E00C3DA70 /* helperfunctions.cpp */,
+				014BE8EE1BCB010E00C3DA70 /* main-stego.cpp */,
+				014BE8EF1BCB010E00C3DA70 /* pngwrapper.cpp */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		014BE8E61BCB00CD00C3DA70 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				014BE8E71BCB00F200C3DA70 /* byteencryption.h */,
+				014BE8E81BCB00F200C3DA70 /* bz2compression.h */,
+				014BE8E91BCB00F200C3DA70 /* helperfunctions.h */,
+				014BE8EA1BCB00F200C3DA70 /* pngwrapper.h */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		01E3A8C91BCAFFB600BB393C = {
+			isa = PBXGroup;
+			children = (
+				014BE8E61BCB00CD00C3DA70 /* Headers */,
+				014BE8E51BCB00C700C3DA70 /* Sources */,
+				01E3A8D31BCAFFB600BB393C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		01E3A8D31BCAFFB600BB393C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				01E3A8D21BCAFFB600BB393C /* PNGStego */,
+				018525B81BCB052E003484E8 /* PNGDestego */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		018525B71BCB052E003484E8 /* PNGDestego */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 018525BE1BCB052E003484E8 /* Build configuration list for PBXNativeTarget "PNGDestego" */;
+			buildPhases = (
+				018525B41BCB052E003484E8 /* Sources */,
+				018525B51BCB052E003484E8 /* Frameworks */,
+				018525B61BCB052E003484E8 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PNGDestego;
+			productName = PNGDestego;
+			productReference = 018525B81BCB052E003484E8 /* PNGDestego */;
+			productType = "com.apple.product-type.tool";
+		};
+		01E3A8D11BCAFFB600BB393C /* PNGStego */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 01E3A8D91BCAFFB600BB393C /* Build configuration list for PBXNativeTarget "PNGStego" */;
+			buildPhases = (
+				01E3A8CE1BCAFFB600BB393C /* Sources */,
+				01E3A8CF1BCAFFB600BB393C /* Frameworks */,
+				01E3A8D01BCAFFB600BB393C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PNGStego;
+			productName = PNGStego;
+			productReference = 01E3A8D21BCAFFB600BB393C /* PNGStego */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		01E3A8CA1BCAFFB600BB393C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = Zireael;
+				TargetAttributes = {
+					018525B71BCB052E003484E8 = {
+						CreatedOnToolsVersion = 7.0.1;
+					};
+					01E3A8D11BCAFFB600BB393C = {
+						CreatedOnToolsVersion = 7.0.1;
+					};
+				};
+			};
+			buildConfigurationList = 01E3A8CD1BCAFFB600BB393C /* Build configuration list for PBXProject "PNGStego" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 01E3A8C91BCAFFB600BB393C;
+			productRefGroup = 01E3A8D31BCAFFB600BB393C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				01E3A8D11BCAFFB600BB393C /* PNGStego */,
+				018525B71BCB052E003484E8 /* PNGDestego */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		018525B41BCB052E003484E8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				018525C51BCB057C003484E8 /* pngwrapper.cpp in Sources */,
+				018525C21BCB0577003484E8 /* byteencryption.cpp in Sources */,
+				018525C41BCB0577003484E8 /* helperfunctions.cpp in Sources */,
+				018525C11BCB056F003484E8 /* main-destego.cpp in Sources */,
+				018525C31BCB0577003484E8 /* bz2compression.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		01E3A8CE1BCAFFB600BB393C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				014BE8F41BCB010E00C3DA70 /* pngwrapper.cpp in Sources */,
+				014BE8F01BCB010E00C3DA70 /* byteencryption.cpp in Sources */,
+				014BE8F21BCB010E00C3DA70 /* helperfunctions.cpp in Sources */,
+				014BE8F11BCB010E00C3DA70 /* bz2compression.cpp in Sources */,
+				014BE8F31BCB010E00C3DA70 /* main-stego.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		018525BC1BCB052E003484E8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					/usr/local/Cellar/libpng/1.6.18/include,
+					/usr/local/Cellar/cryptopp/5.6.2/include,
+					/usr/local/Cellar/boost/1.58.0/include,
+					/usr/local/Cellar/lzlib/1.7/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/Cellar/lzlib/1.7/lib,
+					/usr/local/Cellar/libpng/1.6.18/lib,
+					/usr/local/Cellar/boost/1.58.0/lib,
+					/usr/local/Cellar/cryptopp/5.6.2/lib,
+				);
+				OTHER_LDFLAGS = (
+					"-lboost_iostreams",
+					"-lcryptopp",
+					"-lpng",
+					"-lz",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		018525BD1BCB052E003484E8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					/usr/local/Cellar/libpng/1.6.18/include,
+					/usr/local/Cellar/cryptopp/5.6.2/include,
+					/usr/local/Cellar/boost/1.58.0/include,
+					/usr/local/Cellar/lzlib/1.7/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/Cellar/lzlib/1.7/lib,
+					/usr/local/Cellar/libpng/1.6.18/lib,
+					/usr/local/Cellar/boost/1.58.0/lib,
+					/usr/local/Cellar/cryptopp/5.6.2/lib,
+				);
+				OTHER_LDFLAGS = (
+					"-lboost_iostreams",
+					"-lcryptopp",
+					"-lpng",
+					"-lz",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		01E3A8D71BCAFFB600BB393C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		01E3A8D81BCAFFB600BB393C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		01E3A8DA1BCAFFB600BB393C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					/usr/local/Cellar/libpng/1.6.18/include,
+					/usr/local/Cellar/cryptopp/5.6.2/include,
+					/usr/local/Cellar/boost/1.58.0/include,
+					/usr/local/Cellar/lzlib/1.7/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/Cellar/lzlib/1.7/lib,
+					/usr/local/Cellar/libpng/1.6.18/lib,
+					/usr/local/Cellar/boost/1.58.0/lib,
+					/usr/local/Cellar/cryptopp/5.6.2/lib,
+				);
+				OTHER_LDFLAGS = (
+					"-lboost_iostreams",
+					"-lcryptopp",
+					"-lpng",
+					"-lz",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		01E3A8DB1BCAFFB600BB393C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					/usr/local/Cellar/libpng/1.6.18/include,
+					/usr/local/Cellar/cryptopp/5.6.2/include,
+					/usr/local/Cellar/boost/1.58.0/include,
+					/usr/local/Cellar/lzlib/1.7/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/Cellar/lzlib/1.7/lib,
+					/usr/local/Cellar/libpng/1.6.18/lib,
+					/usr/local/Cellar/boost/1.58.0/lib,
+					/usr/local/Cellar/cryptopp/5.6.2/lib,
+				);
+				OTHER_LDFLAGS = (
+					"-lboost_iostreams",
+					"-lcryptopp",
+					"-lpng",
+					"-lz",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		018525BE1BCB052E003484E8 /* Build configuration list for PBXNativeTarget "PNGDestego" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				018525BC1BCB052E003484E8 /* Debug */,
+				018525BD1BCB052E003484E8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		01E3A8CD1BCAFFB600BB393C /* Build configuration list for PBXProject "PNGStego" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				01E3A8D71BCAFFB600BB393C /* Debug */,
+				01E3A8D81BCAFFB600BB393C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		01E3A8D91BCAFFB600BB393C /* Build configuration list for PBXNativeTarget "PNGStego" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				01E3A8DA1BCAFFB600BB393C /* Debug */,
+				01E3A8DB1BCAFFB600BB393C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 01E3A8CA1BCAFFB600BB393C /* Project object */;
+}
