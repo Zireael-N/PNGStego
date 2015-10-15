@@ -6,5 +6,7 @@
 
 # Same for Xcode
 /xcode/*
+!/xcode/PNGStego.xcodeproj/
 !/xcode/PNGStego.xcodeproj/project.pbxproj
+!/xcode/PNGStego.xcodeproj/project.xcworkspace/
 !/xcode/PNGStego.xcodeproj/project.xcworkspace/contents.xcworkspacedata
