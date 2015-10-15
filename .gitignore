@@ -1,0 +1,10 @@
+# Ignore everything but the solution and projects
+/msvc/*
+!/msvc/PNGStego.sln
+!/msvc/PNGStego.vcxproj
+!/msvc/PNGDeStego.vcxproj
+
+# Same for Xcode
+/xcode/*
+!/xcode/PNGStego.xcodeproj/project.pbxproj
+!/xcode/PNGStego.xcodeproj/project.xcworkspace/contents.xcworkspacedata

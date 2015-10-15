@@ -1,0 +1,38 @@
+CXX = g++
+CXXFLAGS = --std=c++11 -O3 -Wall -Wextra
+LIBS = -l"boost_nowide-mgw49-mt-1_59" -l"boost_iostreams-mgw49-mt-1_59" -lbz2 -lpng -lz -lcryptopp -static-libstdc++ -static-libgcc -static -lpthread
+SOURCES = pngwrapper.cpp helperfunctions.cpp bz2compression.cpp byteencryption.cpp
+OBJECTS = $(SOURCES:.cpp=.o)
+
+SRCDIR = ./src/
+HEADERS = ./include/
+
+ENCODER = PNGStego.exe
+DECODER = PNGDeStego.exe
+
+default: all
+
+all: $(ENCODER) $(DECODER)
+
+$(ENCODER): $(OBJECTS) $(SRCDIR)main-stego.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $@ $(SRCDIR)main-stego.cpp $(OBJECTS) $(LIBS)
+
+$(DECODER): $(OBJECTS) $(SRCDIR)main-destego.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $@ $(SRCDIR)main-destego.cpp $(OBJECTS) $(LIBS)
+
+pngwrapper.o: $(SRCDIR)pngwrapper.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -c $(SRCDIR)pngwrapper.cpp
+
+helperfunctions.o: $(SRCDIR)helperfunctions.cpp $(HEADERS)helperfunctions.h
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -c $(SRCDIR)helperfunctions.cpp
+
+bz2compression.o: $(SRCDIR)bz2compression.cpp $(HEADERS)bz2compression.h
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -c $(SRCDIR)bz2compression.cpp
+
+byteencryption.o: $(SRCDIR)byteencryption.cpp $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -c $(SRCDIR)byteencryption.cpp
+
+
+.PHONY: clean
+clean: 
+	DEL /F /Q $(OBJECTS) $(ENCODER) $(DECODER)
