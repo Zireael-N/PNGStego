@@ -29,7 +29,7 @@ Sadly, I couldn't build [stegdetect](https://github.com/abeluck/stegdetect).
 To be use the program properly, please check the recommendations at the end of this Readme.
 
 ## Why?
-There are [countries](https://en.wikipedia.org/wiki/Key_disclosure_law) where one may be forced to provide either keys or decrypted information, there may be countries where using encryption is illegal.
+There are [countries](https://en.wikipedia.org/wiki/Key_disclosure_law) where one may be forced to provide either keys or decrypted information, there may be countries where using encryption is illegal. 
 However, I believe that privacy is a fundamental human right. And while using encryption alone in such countries is not enough, steganography conceals the fact that there's hidden data.
 
 ## Usage
@@ -50,17 +50,17 @@ To extract the data, select the container and drag&drop it onto PNGDeStego.exe. 
 
 Syntax is:
 
-'''
+```
 PNGStego.exe [path-to-container] [input-file] [key] [--silent]
 PNGDeStego.exe [path-to-container] [output-file] [key] [--silent]
-'''
+```
 
 For example:
 
-'''
+```
 PNGStego.exe cats.png passwords.txt el!tepa55word
 PNGDeStego.exe "cats (copy).png" mylovelyhiddenfile el!tepa55word --silent
-'''
+```
 
 Note that the program stores the file's extension in the container but it doesn't store its full name, so when you extract the data, you don't have to type the extension.
 `--silent` key turns off any output, unless there's an error that didn't let the program do its job.
@@ -75,17 +75,17 @@ But it does so from your Home folder. It matters because the program will look f
 Invoking them manually is preferable because you can specify arguments they are called with.
 Syntax is:
 
-'''bash
+```bash
 $ ./PNGStego [path-to-container] [input-file] [key] [--silent]
 $ ./PNGDestego [path-to-container] [output-file] [key] [--silent]
-'''
+```
 
 For example:
 
-'''bash
+```bash
 $ ./PNGStego cats.png passwords.txt el!tepa55word
 $ ./PNGDestego "cats (copy).png" mylovelyhiddenfile el!tepa55word --silent
-'''
+```
 
 Note that the program stores the file's extension in the container but it doesn't store its full name, so when you extract the data, you don't have to type the extension.
 `--silent` key turns off any output, unless there's an error that didn't let the program do its job.
@@ -94,17 +94,17 @@ Note that the program stores the file's extension in the container but it doesn'
 
 I believe you guys don't need help figuring things out.
 
-'''bash
+```bash
 $ ./pngstego [path-to-container] [input-file] [key] [--silent]
 $ ./pngdestego [path-to-container] [output-file] [key] [--silent]
-'''
+```
 
 For example:
 
-'''bash
+```bash
 $ ./pngstego cats.png passwords.txt el!tepa55word
 $ ./pngdestego "cats (copy).png" mylovelyhiddenfile el!tepa55word --silent
-'''
+```
 
 Note that the program stores the file's extension in the container but it doesn't store its full name, so when you extract the data, you don't have to type the extension.
 `--silent` key turns off any output, unless there's an error that didn't let the program do its job.
@@ -156,9 +156,9 @@ Open Makefile.mingw with a text editor.
 Change -l"boost_nowide-mgw52-mt-1_59" -l"boost_iostreams-mgw52-mt-1_59" if needed.
 Then open a cmd.exe and run the following command:
 
-'''
+```
 mingw32-make -f Makefile.mingw
-'''
+```
 
 ### OS X
 
@@ -172,26 +172,26 @@ First, you'll need to install Xcode and the libraries PNGStego depends on:
 
 To install the libraries the easy way, you can use [Homebrew](https://github.com/Homebrew/homebrew):
 
-'''bash
+```bash
 $ brew install lbzip2
 $ brew install lzlib
 $ brew install libpng
 $ brew install cryptopp
 $ brew install boost
-'''
+```
 
 Then you can grab the Xcode project in this repository. Make a few changes:
 
-'''
+```
 Product - Scheme - Edit Scheme...
 Build - Build - + - PNGDestego - Add
-'''
+```
 
 To ensure that you build both binaries.
 
-'''
+```
 File - Project Settings... - Advanced...
-'''
+```
 
 To change where Xcode will create binaries. You may need to change headers/libraries search paths in the project's settings. Now you can build the project.
 
@@ -207,18 +207,18 @@ You'll need these libraries:
 
 After getting them you can simply compile the project with 
 
-'''bash
+```bash
 $ make
-'''
+```
 
 To install it you can use:
 
-'''bash
+```bash
 $ sudo make install
-'''
+```
 
 However, this is **not recommended**. Why? Because your package manager won't know about the program.
-If your distributive uses .deb-packages, check [this](https://wiki.debian.org/HowToPackageForDebian), if your distributive uses .rpm-packages, check [this](https://fedoraproject.org/wiki/How_to_create_an_RPM_package), if your distributive uses [pacman](https://wiki.archlinux.org/index.php/Pacman), check [this](https://wiki.archlinux.org/index.php/Creating_packages).
+If your distributive uses .deb-packages, check [this](https://wiki.debian.org/HowToPackageForDebian); if your distributive uses .rpm-packages, check [this](https://fedoraproject.org/wiki/How_to_create_an_RPM_package); if your distributive uses [pacman](https://wiki.archlinux.org/index.php/Pacman), check [this](https://wiki.archlinux.org/index.php/Creating_packages).
 
 ## Recommendations
 
