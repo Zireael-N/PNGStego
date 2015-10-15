@@ -75,14 +75,14 @@ But it does so from your Home folder. It matters because the program will look f
 Invoking them manually is preferable because you can specify arguments they are called with.
 Syntax is:
 
-```bash
+```
 $ ./PNGStego [path-to-container] [input-file] [key] [--silent]
 $ ./PNGDestego [path-to-container] [output-file] [key] [--silent]
 ```
 
 For example:
 
-```bash
+```
 $ ./PNGStego cats.png passwords.txt el!tepa55word
 $ ./PNGDestego "cats (copy).png" mylovelyhiddenfile el!tepa55word --silent
 ```
@@ -94,14 +94,14 @@ Note that the program stores the file's extension in the container but it doesn'
 
 I believe you guys don't need help figuring things out.
 
-```bash
+```
 $ ./pngstego [path-to-container] [input-file] [key] [--silent]
 $ ./pngdestego [path-to-container] [output-file] [key] [--silent]
 ```
 
 For example:
 
-```bash
+```
 $ ./pngstego cats.png passwords.txt el!tepa55word
 $ ./pngdestego "cats (copy).png" mylovelyhiddenfile el!tepa55word --silent
 ```
@@ -153,7 +153,7 @@ Then link against the libs mentioned above.
 #### MinGW
 
 Open Makefile.mingw with a text editor.
-Change -l"boost_nowide-mgw52-mt-1_59" -l"boost_iostreams-mgw52-mt-1_59" if needed.
+Change `-l"boost_nowide-mgw52-mt-1_59" -l"boost_iostreams-mgw52-mt-1_59"` if needed.
 Then open a cmd.exe and run the following command:
 
 ```
