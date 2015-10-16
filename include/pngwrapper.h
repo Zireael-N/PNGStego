@@ -54,14 +54,14 @@ public:
 	void save(std::ostream& stream);
 
 	/** Returns capacity of the PNG file with the given seed, in bytes */
-	uint32_t capacity(uint32_t seed);
+	uint32_t capacity(uint32_t seed) const;
 	/** Embeds data from a file with the given filename into the PNG file, using the given key. */
 	void encode(const std::string& filename, const std::string& key);
 	/** Extracts data from the PNG file using the given key and saves it into a file with the given filename. */
-	void decode(std::string filename, const std::string& key);
+	void decode(std::string filename, const std::string& key) const;
 
 	/** Returns whether the PNGFile class outputs its actions into a stream */
-	bool getOutput();
+	bool getOutput() const;
 	/** Sets whether the PNGFile class should output its actions into a stream */
 	void setOutput(bool output);
 	/**

@@ -345,12 +345,15 @@ namespace PNGStego {
 		// Write data to file
 		png_set_bgr(PngPointer);
 		png_set_write_fn(PngPointer, reinterpret_cast<void*>(&stream), WriteToStream, nullptr);
+		// png_set_rows() takes a pointer to a non-const data as its
+		// 3rd argument, making it not possible to declare save() as const
+		// without using const_cast on pixels.data(), I'd rather not do that.
 		png_set_rows(PngPointer, InfoPointer, RowPointers.data());
 		png_write_png(PngPointer, InfoPointer, params.BitsPerPixel == 24 ? PNG_TRANSFORM_STRIP_FILLER_AFTER : PNG_TRANSFORM_IDENTITY, NULL);
 		png_destroy_write_struct(&PngPointer, &InfoPointer);
 	}
 
-	uint32_t PNGFile::capacity(uint32_t seed) {
+	uint32_t PNGFile::capacity(uint32_t seed) const {
 		/*
 		  I kinda doubt there'd be a picture able to hold more
 		  than 0.5 GiB in near future, so uint32_t should be enough.
@@ -464,7 +467,7 @@ namespace PNGStego {
 		}		
 	}
 
-	void PNGFile::decode(std::string filename, const std::string& key) {
+	void PNGFile::decode(std::string filename, const std::string& key) const {
 		if (pixels.empty()) {
 			throw std::runtime_error("Trying to extract data from an empty PNG");
 		}
@@ -537,7 +540,7 @@ namespace PNGStego {
 		}
 	}
 
-	bool PNGFile::getOutput() {
+	bool PNGFile::getOutput() const {
 		return outputEnabled;
 	}
 
