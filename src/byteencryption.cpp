@@ -61,7 +61,7 @@ namespace Encryption {
 			new CryptoPP::AuthenticatedEncryptionFilter(e,
 				new CryptoPP::StringSink(encrypted), false, TAG_SIZE
 				) // AuthenticatedEncryptionFilter
-			); // StringSource
+		); // ArraySource
 
 		return PNGStego::stringToVector(encrypted);
 	}
@@ -78,7 +78,7 @@ namespace Encryption {
 		);
 		CryptoPP::ArraySource ss(source.data(), source.size(), true,
 			new CryptoPP::Redirector(df /*, PASS_EVERYTHING */)
-			); // StringSource
+		); // ArraySource
 
 		if (false == df.GetLastResult())
 			throw std::runtime_error("The data's corrupted.");
@@ -94,7 +94,7 @@ namespace Encryption {
 			new CryptoPP::AuthenticatedEncryptionFilter(e,
 				new CryptoPP::StringSink(encrypted), false, TAG_SIZE
 				) // AuthenticatedEncryptionFilter
-			); // StringSource
+		); // ArraySource
 
 		return PNGStego::stringToVector(encrypted);
 	}
@@ -108,10 +108,10 @@ namespace Encryption {
 			new CryptoPP::StringSink(decrypted),
 			CryptoPP::AuthenticatedDecryptionFilter::DEFAULT_FLAGS,
 			TAG_SIZE
-			);
+		);
 		CryptoPP::ArraySource ss(source.data(), source.size(), true,
 			new CryptoPP::Redirector(df /*, PASS_EVERYTHING */)
-			); // StringSource
+		); // ArraySource
 
 		if (false == df.GetLastResult())
 			throw std::runtime_error("The data's corrupted.");
