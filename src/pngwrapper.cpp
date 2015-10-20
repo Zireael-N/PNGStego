@@ -89,7 +89,8 @@ namespace PNGStego {
 		Stream->write(reinterpret_cast<char *>(data), length);
 	}
 
-	PNGFile::PNGFile() : pixels(std::vector<BGRA>()), salt(std::vector<uint8_t>()), iv(std::vector<byte>()), outputEnabled(false), outputStream(&std::cout) { }
+	PNGFile::PNGFile() : pixels(std::vector<BGRA>()), salt(std::vector<uint8_t>()), 
+	                        iv(std::vector<byte>()), outputEnabled(false), outputStream(&std::cout) { }
 
 	PNGFile::PNGFile(const PNGFile& other) : pixels(std::vector<BGRA>()), salt(std::vector<uint8_t>()) {
 		std::copy(other.pixels.begin(), other.pixels.end(), std::back_inserter(this->pixels));
@@ -97,17 +98,17 @@ namespace PNGStego {
 		for (int i = 0; i < CryptoPP::Serpent::BLOCKSIZE; ++i)
 			this->iv[i] = other.iv[i];
 		
-		this->params.width = other.params.width;
-		this->params.height = other.params.height;
-		this->params.BitsPerPixel = other.params.BitsPerPixel;
-		this->params.BitDepth = other.params.BitDepth;
-		this->params.ColorType = other.params.ColorType;
-		this->params.InterlaceType = other.params.InterlaceType;
+		this->params.width           = other.params.width;
+		this->params.height          = other.params.height;
+		this->params.BitsPerPixel    = other.params.BitsPerPixel;
+		this->params.BitDepth        = other.params.BitDepth;
+		this->params.ColorType       = other.params.ColorType;
+		this->params.InterlaceType   = other.params.InterlaceType;
 		this->params.CompressionType = other.params.CompressionType;
-		this->params.FilterType = other.params.FilterType;
-		this->params.Channels = other.params.Channels;
-		this->outputEnabled = other.outputEnabled;
-		this->outputStream = other.outputStream;
+		this->params.FilterType      = other.params.FilterType;
+		this->params.Channels        = other.params.Channels;
+		this->outputEnabled          = other.outputEnabled;
+		this->outputStream           = other.outputStream;
 	}
 
 	PNGFile::PNGFile(PNGFile &&other) : PNGFile() {
@@ -124,17 +125,17 @@ namespace PNGStego {
 		for (int i = 0; i < CryptoPP::Serpent::BLOCKSIZE; ++i)
 			std::swap(this->iv[i], other.iv[i]);
 
-		std::swap(this->params.width, other.params.width);
-		std::swap(this->params.height, other.params.height);
-		std::swap(this->params.BitsPerPixel, other.params.BitsPerPixel);
-		std::swap(this->params.BitDepth, other.params.BitDepth);
-		std::swap(this->params.ColorType, other.params.ColorType);
-		std::swap(this->params.InterlaceType, other.params.InterlaceType);
+		std::swap(this->params.width,           other.params.width);
+		std::swap(this->params.height,          other.params.height);
+		std::swap(this->params.BitsPerPixel,    other.params.BitsPerPixel);
+		std::swap(this->params.BitDepth,        other.params.BitDepth);
+		std::swap(this->params.ColorType,       other.params.ColorType);
+		std::swap(this->params.InterlaceType,   other.params.InterlaceType);
 		std::swap(this->params.CompressionType, other.params.CompressionType);
-		std::swap(this->params.FilterType, other.params.FilterType);
-		std::swap(this->params.Channels, other.params.Channels);
-		std::swap(this->outputEnabled, other.outputEnabled);
-		std::swap(this->outputStream, other.outputStream);
+		std::swap(this->params.FilterType,      other.params.FilterType);
+		std::swap(this->params.Channels,        other.params.Channels);
+		std::swap(this->outputEnabled,          other.outputEnabled);
+		std::swap(this->outputStream,           other.outputStream);
 	}
 
 	PNGFile& PNGFile::operator=(const PNGFile& other) {
@@ -173,11 +174,12 @@ namespace PNGStego {
 	}
 
 	void PNGFile::load(std::istream& stream) {
-		uint8_t header[8];
+		const int signatureLength = 8;
+		uint8_t header[signatureLength];
 
 		// Check the file's signature
-		stream.read(reinterpret_cast<char*>(&header), sizeof(header));
-		if (png_sig_cmp(header, 0, 8))
+		stream.read(reinterpret_cast<char*>(&header), signatureLength);
+		if (png_sig_cmp(header, 0, signatureLength))
 		{
 			throw std::invalid_argument("Invalid file format");
 		}
@@ -208,7 +210,8 @@ namespace PNGStego {
 		// Get the image's parameters
 		png_read_info(PngPointer, InfoPointer);
 		params.Channels = png_get_channels(PngPointer, InfoPointer);
-		png_get_IHDR(PngPointer, InfoPointer, &params.width, &params.height, &params.BitDepth, &params.ColorType, &params.InterlaceType, &params.CompressionType, &params.FilterType);
+		png_get_IHDR(PngPointer, InfoPointer, &params.width, &params.height, &params.BitDepth,
+			                     &params.ColorType, &params.InterlaceType, &params.CompressionType, &params.FilterType);
 		
 		// Convert to 32-bits if needed
 		png_set_strip_16(PngPointer);
@@ -223,6 +226,7 @@ namespace PNGStego {
 			params.BitsPerPixel = 24;
 			break;
 		}
+
 		case PNG_COLOR_TYPE_PALETTE:
 		{
 			// Check whether there's a tRNS chunk
@@ -277,7 +281,8 @@ namespace PNGStego {
 		// Update the image's parameters
 		png_read_update_info(PngPointer, InfoPointer);
 		params.Channels = png_get_channels(PngPointer, InfoPointer);
-		png_get_IHDR(PngPointer, InfoPointer, &params.width, &params.height, &params.BitDepth, &params.ColorType, &params.InterlaceType, &params.CompressionType, &params.FilterType);
+		png_get_IHDR(PngPointer, InfoPointer, &params.width, &params.height, &params.BitDepth,
+		                         &params.ColorType, &params.InterlaceType, &params.CompressionType, &params.FilterType);
 
 		/*
 		  Instead of storing the image in a 2D-array, I store it in a 1D-array.
@@ -327,8 +332,8 @@ namespace PNGStego {
 		}
 
 		// Set PNG parameters
-		png_set_IHDR(PngPointer, InfoPointer, params.width, params.height, params.BitDepth, params.BitsPerPixel == 24 ? PNG_COLOR_TYPE_RGB : PNG_COLOR_TYPE_RGBA,
-						params.InterlaceType, params.CompressionType, params.FilterType);
+		png_set_IHDR(PngPointer, InfoPointer, params.width, params.height, params.BitDepth, params.BitsPerPixel == 24 ?
+			   PNG_COLOR_TYPE_RGB : PNG_COLOR_TYPE_RGBA, params.InterlaceType, params.CompressionType, params.FilterType);
 
 		/*
 		  Instead of storing the image in a 2D-array, I store it in a 1D-array.
@@ -349,7 +354,8 @@ namespace PNGStego {
 		// 3rd argument, making it not possible to declare save() as const
 		// without using const_cast on pixels.data(), I'd rather not do that.
 		png_set_rows(PngPointer, InfoPointer, RowPointers.data());
-		png_write_png(PngPointer, InfoPointer, params.BitsPerPixel == 24 ? PNG_TRANSFORM_STRIP_FILLER_AFTER : PNG_TRANSFORM_IDENTITY, NULL);
+		png_write_png(PngPointer, InfoPointer, params.BitsPerPixel == 24 ?
+			     PNG_TRANSFORM_STRIP_FILLER_AFTER : PNG_TRANSFORM_IDENTITY, NULL);
 		png_destroy_write_struct(&PngPointer, &InfoPointer);
 	}
 
