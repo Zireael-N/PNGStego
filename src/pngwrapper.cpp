@@ -159,7 +159,7 @@ namespace PNGStego {
 	void PNGFile::load(const std::string& filename) {
 		boost::nowide::ifstream File(filename.c_str(), std::ifstream::binary | std::ifstream::in);
 		if (!File) {
-			throw std::invalid_argument("Cannot open file");
+			throw std::invalid_argument("Cannot open " + filename);
 		}
 		this->load(File);
 	}
@@ -167,7 +167,7 @@ namespace PNGStego {
 	void PNGFile::save(const std::string& filename) {
 		boost::nowide::ofstream File(filename.c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
 		if (!File) {
-			throw std::invalid_argument("Cannot open file");
+			throw std::invalid_argument("Cannot open " + filename);
 		}
 		this->save(File);
 	}
@@ -391,7 +391,7 @@ namespace PNGStego {
 
 		boost::nowide::ifstream File(filename.c_str(), std::ios::in | std::ios::binary);
 		if (!File) {
-			throw std::invalid_argument("Cannot open file");
+			throw std::invalid_argument("Cannot open " + filename);
 		}
 		std::string extension = getExtension(filename);
 		uint32_t dataSize = static_cast<uint32_t>(fileSize(filename));
@@ -529,14 +529,14 @@ namespace PNGStego {
 				(*outputStream) << "Writing data..." << std::endl;
 			boost::nowide::ofstream File(filename.c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
 			if (!File) {
-				throw std::invalid_argument("Cannot open file for writing.");
+				throw std::invalid_argument("Cannot open " + filename);
 			}
 			File.write(reinterpret_cast<char *>(binaryData.data() + extensionSize), binaryData.size() - extensionSize);
 		}
 		else {
 			// Basically, if dataSize happens to be larger than the result of capacity()
 			// then something's not right, so we throw an exception.
-			throw std::runtime_error("Corrupted header.");
+			throw std::runtime_error("Corrupted header");
 		}
 	}
 
