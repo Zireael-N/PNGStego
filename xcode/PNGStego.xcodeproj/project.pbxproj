@@ -218,17 +218,12 @@
 		018525BC1BCB052E003484E8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = (
-					/usr/local/Cellar/libpng/1.6.18/include,
-					/usr/local/Cellar/cryptopp/5.6.2/include,
-					/usr/local/Cellar/boost/1.58.0/include,
-					/usr/local/Cellar/lzlib/1.7/include,
-				);
-				LIBRARY_SEARCH_PATHS = (
-					/usr/local/Cellar/lzlib/1.7/lib,
-					/usr/local/Cellar/libpng/1.6.18/lib,
-					/usr/local/Cellar/boost/1.58.0/lib,
-					/usr/local/Cellar/cryptopp/5.6.2/lib,
+				HEADER_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-isystem",
+					/usr/local/include,
 				);
 				OTHER_LDFLAGS = (
 					"-lboost_iostreams",
@@ -243,17 +238,12 @@
 		018525BD1BCB052E003484E8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = (
-					/usr/local/Cellar/libpng/1.6.18/include,
-					/usr/local/Cellar/cryptopp/5.6.2/include,
-					/usr/local/Cellar/boost/1.58.0/include,
-					/usr/local/Cellar/lzlib/1.7/include,
-				);
-				LIBRARY_SEARCH_PATHS = (
-					/usr/local/Cellar/lzlib/1.7/lib,
-					/usr/local/Cellar/libpng/1.6.18/lib,
-					/usr/local/Cellar/boost/1.58.0/lib,
-					/usr/local/Cellar/cryptopp/5.6.2/lib,
+				HEADER_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-isystem",
+					/usr/local/include,
 				);
 				OTHER_LDFLAGS = (
 					"-lboost_iostreams",
@@ -345,17 +335,12 @@
 		01E3A8DA1BCAFFB600BB393C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = (
-					/usr/local/Cellar/libpng/1.6.18/include,
-					/usr/local/Cellar/cryptopp/5.6.2/include,
-					/usr/local/Cellar/boost/1.58.0/include,
-					/usr/local/Cellar/lzlib/1.7/include,
-				);
-				LIBRARY_SEARCH_PATHS = (
-					/usr/local/Cellar/lzlib/1.7/lib,
-					/usr/local/Cellar/libpng/1.6.18/lib,
-					/usr/local/Cellar/boost/1.58.0/lib,
-					/usr/local/Cellar/cryptopp/5.6.2/lib,
+				HEADER_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-isystem",
+					/usr/local/include,
 				);
 				OTHER_LDFLAGS = (
 					"-lboost_iostreams",
@@ -370,17 +355,12 @@
 		01E3A8DB1BCAFFB600BB393C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = (
-					/usr/local/Cellar/libpng/1.6.18/include,
-					/usr/local/Cellar/cryptopp/5.6.2/include,
-					/usr/local/Cellar/boost/1.58.0/include,
-					/usr/local/Cellar/lzlib/1.7/include,
-				);
-				LIBRARY_SEARCH_PATHS = (
-					/usr/local/Cellar/lzlib/1.7/lib,
-					/usr/local/Cellar/libpng/1.6.18/lib,
-					/usr/local/Cellar/boost/1.58.0/lib,
-					/usr/local/Cellar/cryptopp/5.6.2/lib,
+				HEADER_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-isystem",
+					/usr/local/include,
 				);
 				OTHER_LDFLAGS = (
 					"-lboost_iostreams",
@@ -402,6 +382,7 @@
 				018525BD1BCB052E003484E8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		01E3A8CD1BCAFFB600BB393C /* Build configuration list for PBXProject "PNGStego" */ = {
 			isa = XCConfigurationList;
