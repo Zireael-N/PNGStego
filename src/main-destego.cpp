@@ -88,7 +88,7 @@ int main(int argc, char **argv) {
 		if (!silentMode)
 			boost::nowide::cout << "Done." << std::endl;
 	}
-	catch (std::exception &e) {
+	catch (const std::exception &e) {
 		boost::nowide::cerr << "Fatal error: " << e.what() << std::endl;
 		PNGStego::zeroMemory(&key[0], key.size());
 #if defined(_WIN32)
