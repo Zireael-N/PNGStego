@@ -102,36 +102,36 @@ using namespace PNGStego::bzip2;
 
 bool testCompress() {
 	std::vector<uint8_t> temp = compress(originalData);
-    return temp == bz2Data;
+	return temp == bz2Data;
 }
 
 bool testDecompress() {
 	std::vector<uint8_t> temp = decompress(bz2Data);
-    return temp == originalData;
+	return temp == originalData;
 }
 
 bool testWithRandomData() {
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<size_t> randomSize(100, 200);
-    std::uniform_int_distribution<uint8_t>  randomData(0, 0xFF);
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<size_t> randomSize(100, 200);
+	std::uniform_int_distribution<uint8_t>  randomData(0, 0xFF);
 
 
-    std::vector<uint8_t> container;
-    std::vector<uint8_t> compressedData;
-    const int iterations = 100;
-    for (int i = 0; i < iterations; ++i) {
-        size_t size = randomSize(mt);
-        container.resize(size);
-        for (size_t i = 0; i < size; ++i) {
-            container[i] = randomData(mt);
-        }
-        compressedData = compress(container);
-        std::vector<uint8_t> decompressedData = decompress(compressedData);
-        if (decompressedData != container)
-            return false;
-    }
-    return true;
+	std::vector<uint8_t> container;
+	std::vector<uint8_t> compressedData;
+	const int iterations = 100;
+	for (int i = 0; i < iterations; ++i) {
+		size_t size = randomSize(mt);
+		container.resize(size);
+		for (size_t j = 0; j < size; ++j) {
+			container[j] = randomData(mt);
+		}
+		compressedData = compress(container);
+		std::vector<uint8_t> decompressedData = decompress(compressedData);
+		if (decompressedData != container)
+			return false;
+	}
+	return true;
 }
 
 int main() {
@@ -144,16 +144,16 @@ int main() {
 		std::cout << "PASSED!\n";
 		++successes;
 	} else {
-		std::cout << "FAILED!\n";		
+		std::cout << "FAILED!\n";
 	}
 
-    std::cout << "Testing decompress() with precomputed data...: ";
+	std::cout << "Testing decompress() with precomputed data...: ";
 	++tests;
 	if (testDecompress()) {
 		std::cout << "PASSED!\n";
 		++successes;
 	} else {
-		std::cout << "FAILED!\n";		
+		std::cout << "FAILED!\n";
 	}
 
 	std::cout << "Testing (de-)compress() with random data...: ";
@@ -162,7 +162,7 @@ int main() {
 		std::cout << "PASSED!\n";
 		++successes;
 	} else {
-		std::cout << "FAILED!\n";		
+		std::cout << "FAILED!\n";
 	}
 
 	std::cout << "\nTESTS: " << tests;

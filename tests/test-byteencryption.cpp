@@ -249,89 +249,89 @@ std::vector<uint8_t> IV;
 std::vector<uint8_t> salt;
 
 void init() {
-    const int IV_BYTES = 12;       // 96 bits
-    const int SALT_BYTES = 16;     // 128 bits
+	const int IV_BYTES = 12;       // 96 bits
+	const int SALT_BYTES = 16;     // 128 bits
 
-    IV.resize(IV_BYTES);
-    for (int i = 0; i < IV_BYTES; ++i) {
-        IV[i] = static_cast<uint8_t>(i);
-    }
+	IV.resize(IV_BYTES);
+	for (int i = 0; i < IV_BYTES; ++i) {
+		IV[i] = static_cast<uint8_t>(i);
+	}
 
-    salt.resize(SALT_BYTES);
-    for (int i = 0; i < SALT_BYTES; ++i) {
-        salt[i] = static_cast<uint8_t>(SALT_BYTES - i);
-    }
+	salt.resize(SALT_BYTES);
+	for (int i = 0; i < SALT_BYTES; ++i) {
+		salt[i] = static_cast<uint8_t>(SALT_BYTES - i);
+	}
 
-    hashedKey = hashKey<64>(password, salt);
+	hashedKey = hashKey<64>(password, salt);
 }
 
 bool testAESEncryption() {
 	std::vector<uint8_t> temp = AESEncrypt(originalData, hashedKey.data(), hashedKey.size() - 32, IV.data(), IV.size());
-    return temp == AESEncrypted;
+	return temp == AESEncrypted;
 }
 
 bool testSerpentEncryption() {
 	std::vector<uint8_t> temp = SerpentEncrypt(originalData, hashedKey.data() + 32, hashedKey.size() - 32, IV.data(), IV.size());
-    return temp == SerpentEncrypted;
+	return temp == SerpentEncrypted;
 }
 
 bool testAESDecryption() {
-    std::vector<uint8_t> temp = AESDecrypt(AESEncrypted, hashedKey.data(), hashedKey.size() - 32, IV.data(), IV.size());
-    return temp == originalData;
+	std::vector<uint8_t> temp = AESDecrypt(AESEncrypted, hashedKey.data(), hashedKey.size() - 32, IV.data(), IV.size());
+	return temp == originalData;
 }
 
 bool testSerpentDecryption() {
-    std::vector<uint8_t> temp = SerpentDecrypt(SerpentEncrypted, hashedKey.data() + 32, hashedKey.size() - 32, IV.data(), IV.size());
-    return temp == originalData;
+	std::vector<uint8_t> temp = SerpentDecrypt(SerpentEncrypted, hashedKey.data() + 32, hashedKey.size() - 32, IV.data(), IV.size());
+	return temp == originalData;
 }
 
 bool testPBKDF2() {
-    std::array<uint8_t, 64> temp = hashKey<64, 100000>(password, salt);
-    return temp == hashedPassword100k &&
-           hashedKey == hashedPassword500k;
+	std::array<uint8_t, 64> temp = hashKey<64, 100000>(password, salt);
+	return temp == hashedPassword100k &&
+		   hashedKey == hashedPassword500k;
 }
 
 bool testDoubleEncryption() {
-    std::vector<uint8_t> temp = encrypt(originalData, password, IV, salt);
-    return temp == doubleEncrypted;
+	std::vector<uint8_t> temp = encrypt(originalData, password, IV, salt);
+	return temp == doubleEncrypted;
 }
 
 bool testDoubleDecryption() {
-    std::vector<uint8_t> temp = decrypt(doubleEncrypted, password, IV, salt);
-    return temp == originalData;
+	std::vector<uint8_t> temp = decrypt(doubleEncrypted, password, IV, salt);
+	return temp == originalData;
 }
 
 bool testWithRandomData() {
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::uniform_int_distribution<size_t> randomSize(100, 200);
-    std::uniform_int_distribution<uint8_t>  randomData(0, 0xFF);
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	std::uniform_int_distribution<size_t> randomSize(100, 200);
+	std::uniform_int_distribution<uint8_t>  randomData(0, 0xFF);
 
 
-    std::vector<uint8_t> container;
-    std::vector<uint8_t> encryptedData;
-    const int iterations = 100;
-    for (int i = 0; i < iterations; ++i) {
-        size_t size = randomSize(mt);
-        container.resize(size);
-        for (size_t i = 0; i < size; ++i) {
-            container[i] = randomData(mt);
-        }
-        encryptedData = SerpentEncrypt(container, hashedKey.data() + 32, hashedKey.size() - 32, IV.data(), IV.size());
-        encryptedData = AESEncrypt(encryptedData, hashedKey.data(), hashedKey.size() - 32, IV.data(), IV.size());
-        std::vector<uint8_t> decryptedData;
-        decryptedData = AESDecrypt(encryptedData, hashedKey.data(), hashedKey.size() - 32, IV.data(), IV.size());
-        decryptedData = SerpentDecrypt(decryptedData, hashedKey.data() + 32, hashedKey.size() - 32, IV.data(), IV.size());
-        if (decryptedData != container)
-            return false;
-    }
-    return true;
+	std::vector<uint8_t> container;
+	std::vector<uint8_t> encryptedData;
+	const int iterations = 100;
+	for (int i = 0; i < iterations; ++i) {
+		size_t size = randomSize(mt);
+		container.resize(size);
+		for (size_t j = 0; j < size; ++j) {
+			container[j] = randomData(mt);
+		}
+		encryptedData = SerpentEncrypt(container, hashedKey.data() + 32, hashedKey.size() - 32, IV.data(), IV.size());
+		encryptedData = AESEncrypt(encryptedData, hashedKey.data(), hashedKey.size() - 32, IV.data(), IV.size());
+		std::vector<uint8_t> decryptedData;
+		decryptedData = AESDecrypt(encryptedData, hashedKey.data(), hashedKey.size() - 32, IV.data(), IV.size());
+		decryptedData = SerpentDecrypt(decryptedData, hashedKey.data() + 32, hashedKey.size() - 32, IV.data(), IV.size());
+		if (decryptedData != container)
+			return false;
+	}
+	return true;
 }
 
 int main() {
-    std::cout << "Initializing IV, salt and a derived key: ";
-    init();
-    std::cout << "Done.\n";
+	std::cout << "Initializing IV, salt and a derived key: ";
+	init();
+	std::cout << "Done.\n";
 
 	int tests = 0;
 	int successes = 0;
@@ -342,35 +342,35 @@ int main() {
 		std::cout << "PASSED!\n";
 		++successes;
 	} else {
-		std::cout << "FAILED!\n";		
+		std::cout << "FAILED!\n";
 	}
 
-    std::cout << "Testing SerpentEncrypt() with precomputed data...: ";
+	std::cout << "Testing SerpentEncrypt() with precomputed data...: ";
 	++tests;
 	if (testSerpentEncryption()) {
 		std::cout << "PASSED!\n";
 		++successes;
 	} else {
-		std::cout << "FAILED!\n";		
+		std::cout << "FAILED!\n";
 	}
 
-    std::cout << "Testing AESDecrypt() with precomputed data...: ";
-    ++tests;
-    if (testAESDecryption()) {
-        std::cout << "PASSED!\n";
-        ++successes;
-    } else {
-        std::cout << "FAILED!\n";       
-    }
+	std::cout << "Testing AESDecrypt() with precomputed data...: ";
+	++tests;
+	if (testAESDecryption()) {
+			std::cout << "PASSED!\n";
+			++successes;
+	} else {
+		std::cout << "FAILED!\n";
+	}
 
-    std::cout << "Testing SerpentDecrypt() with precomputed data...: ";
-    ++tests;
-    if (testSerpentDecryption()) {
-        std::cout << "PASSED!\n";
-        ++successes;
-    } else {
-        std::cout << "FAILED!\n";       
-    }
+	std::cout << "Testing SerpentDecrypt() with precomputed data...: ";
+	++tests;
+	if (testSerpentDecryption()) {
+		std::cout << "PASSED!\n";
+		++successes;
+	} else {
+		std::cout << "FAILED!\n";
+	}
 
 	std::cout << "Comparing derived keys with precomputed ones...: ";
 	++tests;
@@ -378,35 +378,35 @@ int main() {
 		std::cout << "PASSED!\n";
 		++successes;
 	} else {
-		std::cout << "FAILED!\n";		
+		std::cout << "FAILED!\n";
 	}
 
-    std::cout << "Testing double encryption with precomputed data...: ";
-    ++tests;
-    if (testDoubleEncryption()) {
-        std::cout << "PASSED!\n";
-        ++successes;
-    } else {
-        std::cout << "FAILED!\n";       
-    }
+	std::cout << "Testing double encryption with precomputed data...: ";
+	++tests;
+	if (testDoubleEncryption()) {
+		std::cout << "PASSED!\n";
+		++successes;
+	} else {
+		std::cout << "FAILED!\n";
+	}
 
-    std::cout << "Testing double decryption with precomputed data...: ";
-    ++tests;
-    if (testDoubleDecryption()) {
-        std::cout << "PASSED!\n";
-        ++successes;
-    } else {
-        std::cout << "FAILED!\n";       
-    }
+	std::cout << "Testing double decryption with precomputed data...: ";
+	++tests;
+	if (testDoubleDecryption()) {
+		std::cout << "PASSED!\n";
+		++successes;
+	} else {
+		std::cout << "FAILED!\n";
+	}
 
-    std::cout << "Testing (de-/en-)cryption with random data...: ";
-    ++tests;
-    if (testWithRandomData()) {
-        std::cout << "PASSED!\n";
-        ++successes;
-    } else {
-        std::cout << "FAILED!\n";       
-    }
+	std::cout << "Testing (de-/en-)cryption with random data...: ";
+	++tests;
+	if (testWithRandomData()) {
+		std::cout << "PASSED!\n";
+		++successes;
+	} else {
+		std::cout << "FAILED!\n";
+	}
 
 	std::cout << "\nTESTS: " << tests;
 	std::cout << "\nPASSED: " << successes;
