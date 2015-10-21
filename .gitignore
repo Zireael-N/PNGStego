@@ -10,6 +10,10 @@
 /src/*
 !/src/*.cpp
 
+!/tests/
+/tests/*
+!/tests/*.cpp
+
 !/include/
 /include/*
 !/include/*.h

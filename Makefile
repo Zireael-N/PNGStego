@@ -6,6 +6,8 @@ OBJECTS = $(SOURCES:.cpp=.o)
 
 SRCDIR = ./src/
 HEADERS = ./include/
+TESTSDIR = ./tests/
+TESTSLIBS = -lboost_iostreams -lbz2 -lcryptopp -lpthread
 
 ENCODER = pngstego
 DECODER = pngdestego
@@ -48,5 +50,22 @@ uninstall:
 	fi;
 
 .PHONY: clean
-clean: 
+clean:
 	rm -f $(OBJECTS) $(ENCODER) $(DECODER)
+
+clean-test:
+	rm -f $(TESTSDIR)test-byteencryption $(TESTSDIR)test-helperfunctions $(TESTSDIR)test-bz2compression
+
+test: $(TESTSDIR)test-byteencryption $(TESTSDIR)test-helperfunctions $(TESTSDIR)test-bz2compression
+	$(TESTSDIR)test-byteencryption
+	$(TESTSDIR)test-helperfunctions
+	$(TESTSDIR)test-bz2compression
+
+$(TESTSDIR)test-byteencryption: $(TESTSDIR)test-byteencryption.cpp $(HEADERS)byteencryption.h byteencryption.o helperfunctions.o
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-byteencryption $(TESTSDIR)test-byteencryption.cpp byteencryption.o helperfunctions.o $(TESTSLIBS)
+
+$(TESTSDIR)test-helperfunctions: $(TESTSDIR)test-helperfunctions.cpp $(HEADERS)helperfunctions.h helperfunctions.o
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-helperfunctions $(TESTSDIR)test-helperfunctions.cpp helperfunctions.o $(TESTSLIBS)
+
+$(TESTSDIR)test-bz2compression: $(TESTSDIR)test-bz2compression.cpp $(HEADERS)bz2compression.h bz2compression.o
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-bz2compression $(TESTSDIR)test-bz2compression.cpp bz2compression.o $(TESTSLIBS)
