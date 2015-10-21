@@ -54,7 +54,7 @@ public:
 	void save(std::ostream& stream);
 
 	/** Returns capacity of the PNG file with the given seed, in bytes */
-	uint32_t capacity(uint32_t seed) const;
+	uint32_t capacity(uint32_t seed) const noexcept;
 	/** Embeds data from a file with the given filename into the PNG file, using the given key. */
 	void encode(const std::string& filename, const std::string& key);
 	/**

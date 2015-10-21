@@ -25,7 +25,7 @@ namespace PNGStego {
 	std::string getExtension(const std::string &filename) {
 		size_t insertpos = filename.size();
 		if (insertpos == 0)
-			throw std::runtime_error("Empty string used as a function parameter");
+			throw std::invalid_argument("Empty string used as a function parameter");
 		for (size_t i = insertpos - 1; ; --i) {
 			if (filename[i] == '.' && i > 0 && filename[i - 1] != DIRECTORYDELIM) {
 				insertpos = i + 1;
@@ -39,7 +39,7 @@ namespace PNGStego {
 	std::string addToFilename(std::string filename, const std::string& addition) {
 		size_t insertpos = filename.size();
 		if (insertpos == 0)
-			throw std::runtime_error("Empty string used as a function parameter");
+			throw std::invalid_argument("Empty string used as a function parameter");
 		for (size_t i = insertpos - 1; ; --i) {
 			if (filename[i] == '.' && i > 0 && filename[i - 1] != DIRECTORYDELIM)
 				insertpos = i;
@@ -53,7 +53,7 @@ namespace PNGStego {
 	std::string shortenFilename(const std::string &filename) {
 		size_t insertpos = filename.size();
 		if (insertpos == 0)
-			throw std::runtime_error("Empty string used as a function parameter");
+			throw std::invalid_argument("Empty string used as a function parameter");
 		for (size_t i = insertpos - 1; ; --i) {
 			if (filename[i] == DIRECTORYDELIM) {
 				insertpos = i + 1;
@@ -116,6 +116,15 @@ namespace PNGStego {
 			source.erase(source.begin(), source.end());
 
 		return;
+	}
+
+	bool endsWith(const std::string &str1, const std::string &str2) {
+		if (!str2.empty() && str1.length() >= str2.length()) {
+			return (0 == str1.compare(str1.length() - str2.length(), str2.length(), str2));
+		}
+		else {
+			return false;
+		}
 	}
 
 	std::vector<uint8_t> stringToVector(const std::string &source) {

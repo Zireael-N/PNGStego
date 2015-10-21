@@ -92,11 +92,10 @@ namespace PNGStego {
 	PNGFile::PNGFile() : pixels(), salt(), iv(), outputFn() { }
 
 	PNGFile::PNGFile(const PNGFile& other) : pixels(), salt() {
-		std::copy(other.pixels.begin(), other.pixels.end(), std::back_inserter(this->pixels));
-		std::copy(other.salt.begin(), other.salt.end(), std::back_inserter(this->salt));
-		for (int i = 0; i < CryptoPP::Serpent::BLOCKSIZE; ++i)
-			this->iv[i] = other.iv[i];
-		
+		this->pixels                 = other.pixels;
+		this->salt                   = other.salt;
+		this->iv                     = other.iv;
+
 		this->params.width           = other.params.width;
 		this->params.height          = other.params.height;
 		this->params.BitsPerPixel    = other.params.BitsPerPixel;
@@ -118,10 +117,9 @@ namespace PNGStego {
 	}
 
 	void PNGFile::swap(PNGFile &other) {
-		std::swap(this->salt, other.salt);
-		std::swap(this->pixels, other.pixels);
-		for (int i = 0; i < CryptoPP::Serpent::BLOCKSIZE; ++i)
-			std::swap(this->iv[i], other.iv[i]);
+		std::swap(this->salt,                   other.salt);
+		std::swap(this->pixels,                 other.pixels);
+		std::swap(this->iv,                     other.iv);
 
 		std::swap(this->params.width,           other.params.width);
 		std::swap(this->params.height,          other.params.height);
@@ -356,7 +354,7 @@ namespace PNGStego {
 		png_destroy_write_struct(&PngPointer, &InfoPointer);
 	}
 
-	uint32_t PNGFile::capacity(uint32_t seed) const {
+	uint32_t PNGFile::capacity(uint32_t seed) const noexcept {
 		/*
 		  I kinda doubt there'd be a picture able to hold more
 		  than 0.5 GiB in near future, so uint32_t should be enough.
@@ -365,9 +363,8 @@ namespace PNGStego {
 		  every single one, that'd be no more than ~1.52 MiB.
 		*/
 
-		if (pixels.empty()) {
-			throw std::runtime_error("PNG's empty");
-		}
+		if (pixels.empty())
+			return 0U;
 
 		boost::random::mt19937 gen(seed);
 		boost::random::uniform_int_distribution<uint16_t> offset(PNG_MIN_OFFSET, PNG_MAX_OFFSET);
@@ -381,7 +378,8 @@ namespace PNGStego {
 			pos += offset(gen);
 		}
 
-		return (capacity / 8) > (SIZE_BYTES + EXTENSION_BYTES) ? (capacity / 8) - (SIZE_BYTES + EXTENSION_BYTES) : 0;
+		return (capacity / 8) > (SIZE_BYTES + EXTENSION_BYTES) ?
+		       (capacity / 8) - (SIZE_BYTES + EXTENSION_BYTES) : 0U;
 	}
 
 	void PNGFile::encode(const std::string& filename, const std::string& key) {
@@ -474,7 +472,9 @@ namespace PNGStego {
 		std::vector<uint8_t> binaryData;
 		std::string extension;
 		this->decode(binaryData, extension, key);
-		filename += std::string(".") + extension;
+		extension = std::string(".") + extension;
+		if (!PNGStego::endsWith(filename, extension))
+			filename += extension;
 		boost::nowide::ofstream File(filename.c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
 		if (!File) {
 			if (backup) {

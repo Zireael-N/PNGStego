@@ -13,7 +13,15 @@
 #include <fstream>
 
 #ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#ifndef __MINGW32__
+#define NOMINMAX
+#endif
 #include <Windows.h>
+#ifndef __MINGW32__
+#undef NOMINMAX
+#endif
+#undef WIN32_LEAN_AND_MEAN
 #elif defined(__GNUC__) || defined (__APPLE__)
 #include <cstring>
 #endif
@@ -37,7 +45,11 @@ std::ifstream::pos_type fileSize(const std::string &filename);
 /** Converts std::string to std::vector<uint8_t> */
 std::vector<uint8_t> stringToVector(const std::string &source);
 
+/** If the source ends with '\r' and '\n' symbols, remove them */
 void cutLineEndings(std::string &source);
+
+/** Returns whether str2 is the ending of the str1 */
+bool endsWith(const std::string &str1, const std::string &str2);
 
 /**
  ** Sets bytes at [dest; dest + size) to zeros
@@ -57,7 +69,7 @@ inline errno_t zeroMemory(void *dest, size_t size) {
 	return memset_s(dest, size, 0x00, size);
 }
 #else
-void* zeroMemory(void *dest, size_t size) {
+inline void* zeroMemory(void *dest, size_t size) {
 	volatile char *t = static_cast<volatile char*>(dest);
 	while (size--)
 		*t++ = 0;

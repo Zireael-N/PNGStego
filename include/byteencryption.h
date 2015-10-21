@@ -55,7 +55,7 @@ std::vector<uint8_t> SerpentDecrypt(const std::vector<uint8_t> &source, const by
  ** Uses 2nd template argument to determine iterations of Whirlpool
  ** (500 000 by default)
  **/
-template <int hashSize, int iterations = 500000>
+template <size_t hashSize, int iterations = 500000>
 std::array<byte, hashSize> hashKey(const std::string &key, const std::vector<byte> &salt) {
 	std::array<byte, hashSize> derived;
 
