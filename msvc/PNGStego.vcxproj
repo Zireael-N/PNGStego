@@ -29,7 +29,11 @@
     <ClInclude Include="..\include\byteencryption.h" />
     <ClInclude Include="..\include\bz2compression.h" />
     <ClInclude Include="..\include\helperfunctions.h" />
+    <ClInclude Include="..\include\pngstegoversion.h" />
     <ClInclude Include="..\include\pngwrapper.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="version.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3019038D-80AE-4864-8017-DDA43342F7C2}</ProjectGuid>

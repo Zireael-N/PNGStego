@@ -35,6 +35,7 @@ namespace boost {
 #include "byteencryption.h"
 #include "pngwrapper.h"
 #include "helperfunctions.h"
+#include "pngstegoversion.h"
 
 int main(int argc, char **argv) {
 #ifdef _WIN32
@@ -42,12 +43,25 @@ int main(int argc, char **argv) {
 #endif
 	
 	std::setlocale(LC_ALL, "");
-	std::string containerFilename, outputFilename, key;
+
 	bool silentMode = false;
-	if (argc < 4) {
-		boost::nowide::cout << "Usage: " << PNGStego::shortenFilename(argv[0]) << " [path-to-container] [output-file] [key] [--silent]" << std::endl;
+	if (argc > 4) {
+		silentMode = (argv[4] == std::string("--silent")
+		                || argv[4] == std::string("-s"));
 	}
 
+	if (!silentMode)
+		boost::nowide::cout << "PNGStego " << PNGStego::version.string << "\nCopyright (C) 2015 Zireael"
+		            "\nDistributed under Boost Software License: http://www.boost.org/LICENSE_1_0.txt\n";
+
+	if (argc < 4) {
+		boost::nowide::cout << "Usage: " << PNGStego::shortenFilename(argv[0]) << " [path-to-container] [output-file] [key] [--silent]\n";
+	}
+
+	if (!silentMode)
+		boost::nowide::cout << std::endl;
+
+	std::string containerFilename, outputFilename, key;
 	if (argc > 1) {
 		containerFilename = argv[1];
 	}
@@ -75,15 +89,13 @@ int main(int argc, char **argv) {
 
 		PNGStego::cutLineEndings(key);
 	}
-	if (argc > 4) {
-		silentMode = (argv[4] == std::string("--silent") || argv[4] == std::string("-s"));
-	}
 
 	try {
 		PNGStego::PNGFile container(containerFilename);
-		container.setOutput(!silentMode);
 		if (!silentMode)
-			container.setOutputStream(boost::nowide::cout);
+			container.setOutputFn([](const std::string &event) {
+				boost::nowide::cout << event << std::endl;
+			});
 		container.decode(outputFilename, key);
 		if (!silentMode)
 			boost::nowide::cout << "Done." << std::endl;

@@ -14,13 +14,13 @@ default: all
 
 all: $(ENCODER) $(DECODER)
 
-$(ENCODER): $(OBJECTS) $(SRCDIR)main-stego.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h
+$(ENCODER): $(OBJECTS) $(SRCDIR)main-stego.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h $(HEADERS)pngstegoversion.h
 	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $@ $(SRCDIR)main-stego.cpp $(OBJECTS) $(LIBS)
 
-$(DECODER): $(OBJECTS) $(SRCDIR)main-destego.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h
+$(DECODER): $(OBJECTS) $(SRCDIR)main-destego.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h $(HEADERS)pngstegoversion.h
 	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $@ $(SRCDIR)main-destego.cpp $(OBJECTS) $(LIBS)
 
-pngwrapper.o: $(SRCDIR)pngwrapper.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h
+pngwrapper.o: $(SRCDIR)pngwrapper.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h $(HEADERS)pngstegoversion.h
 	$(CXX) $(CXXFLAGS) -I$(HEADERS) -c $(SRCDIR)pngwrapper.cpp
 
 helperfunctions.o: $(SRCDIR)helperfunctions.cpp $(HEADERS)helperfunctions.h

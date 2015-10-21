@@ -4,8 +4,8 @@
 
 PNGStego is a command-line application that hides files within [PNG](https://en.wikipedia.org/wiki/Portable_Network_Graphics) images using [LSB](https://en.wikipedia.org/wiki/Least_significant_bit) [steganography](https://en.wikipedia.org/wiki/Steganography).
 To embed the data, the program's user must provide a password. It's impossible to extract that data without knowing the password.
-To achieve its goal, PNGStego first compresses your data with the [bzip2](https://en.wikipedia.org/wiki/Bzip2) algorithm. Then it uses [PBKDF2](https://en.wikipedia.org/wiki/PBKDF2) with hundreds of thousands iterations to derive two 256-bit keys and a seed for [PRNG](https://en.wikipedia.org/wiki/Pseudorandom_number_generator) from the given password.
-[PRNG](https://en.wikipedia.org/wiki/Pseudorandom_number_generator) is used to generate offsets, so the program sometimes skips 1-2 pixels instead of writing into every single one. The two keys are used to encrypt your data with both [AES (Rijndael)](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) and [Serpent](https://en.wikipedia.org/wiki/Serpent_(cipher)).
+To achieve its goal, PNGStego first compresses the data with the [bzip2](https://en.wikipedia.org/wiki/Bzip2) algorithm. Then it uses [PBKDF2](https://en.wikipedia.org/wiki/PBKDF2) with hundreds of thousands iterations to derive two 256-bit keys and a seed for [PRNG](https://en.wikipedia.org/wiki/Pseudorandom_number_generator) from the given password.
+[PRNG](https://en.wikipedia.org/wiki/Pseudorandom_number_generator) is used to generate offsets, so the program sometimes skips 1-2 pixels instead of writing into every single one. The two keys are used to encrypt the data with both [AES (Rijndael)](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) and [Serpent](https://en.wikipedia.org/wiki/Serpent_(cipher)).
 
 [Salt](https://en.wikipedia.org/wiki/Salt_(cryptography)) and [IV](https://en.wikipedia.org/wiki/Initialization_vector) are generated using CryptGenRandom() on Windows, /dev/random on Linux and so on.
 This ensures that even if you use the same container to embed the same data using the same key, the ciphertext will be different each time.
@@ -154,7 +154,7 @@ Then link against the libs mentioned above.
 #### MinGW
 
 Open Makefile.mingw with a text editor.
-Change `-l"boost_nowide-mgw52-mt-1_59" -l"boost_iostreams-mgw52-mt-1_59"` if needed.
+Change `-lboost_nowide-mgw52-mt-1_59 -lboost_iostreams-mgw52-mt-1_59` if needed.
 Then open a cmd.exe and run the following command:
 
 ```
@@ -181,7 +181,7 @@ $ brew install cryptopp
 $ brew install boost
 ```
 
-Then you can grab the Xcode project in this repository. Make a few changes:
+Then you need to open the Xcode project from this repository. Make a few changes:
 
 ```
 Product - Scheme - Edit Scheme...
@@ -194,7 +194,7 @@ To ensure that you build both binaries.
 File - Project Settings... - Advanced...
 ```
 
-To change where Xcode will create binaries. You may need to change headers/libraries search paths in the project's settings. Now you can build the project.
+To change where Xcode will create binaries. Now you can build the project.
 
 ### Linux
 
@@ -212,7 +212,7 @@ After getting them you can simply compile the project with
 $ make
 ```
 
-To install it you can use:
+To install it as a system app you can use:
 
 ```bash
 $ sudo make install

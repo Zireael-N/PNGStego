@@ -6,7 +6,6 @@
 //
 
 #include "bz2compression.h"
-#include <cstdint>
 
 #ifdef _MSC_VER
 #pragma warning(push)

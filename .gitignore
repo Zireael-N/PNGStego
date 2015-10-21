@@ -20,6 +20,8 @@
 !/msvc/PNGStego.sln
 !/msvc/PNGStego.vcxproj
 !/msvc/PNGDeStego.vcxproj
+# ... and a resource file
+!/msvc/version.rc
 
 # Same for Xcode
 !/xcode/

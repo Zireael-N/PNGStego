@@ -9,9 +9,9 @@
 #include "byteencryption.h"
 #include "helperfunctions.h"
 #include "pngwrapper.h"
+#include "pngstegoversion.h"
 #include <png.h>
 #include <climits>
-#include <cstdint>
 #include <fstream>
 #include <stdexcept>
 #include <cstring>
@@ -25,7 +25,8 @@
   /dev/random & /dev/urandom on Linux
   /dev/srandom & /dev/urandom on BSD
   CryptGenRandom() on Windows
-  For OS X it's probably the same as for BSD, it's not mentioned on Crypto++'s Wiki. 
+  For OS X it's probably the same as for BSD, it's not mentioned
+                                              on Crypto++'s Wiki.
 
   Used for generating IV and Salt.
 */
@@ -35,10 +36,10 @@
 #endif
 
 /*
-  While Mersenne Twister is a specific algorithm and C++11 standart implementation,
-  in my experience, returns the same results on Linux, Windows and OS X,
-  std::uniform_int_distribution tends to vary, thus I chose to use boost::random
-  since I need to get the same values if the same seed is used.
+  While Mersenne Twister is a specific algorithm and C++11 standart
+  implementation, in my experience, returns the same results on Linux, Windows
+  and OS X, std::uniform_int_distribution tends to vary, thus I chose to use
+  boost::random since I need to get the same values if the same seed is used.
   
   Used for generating offsets.
 */
@@ -55,7 +56,6 @@
 #else
 namespace boost {
 	namespace nowide {
-
 		using std::basic_ifstream;
 		using std::basic_ofstream;
 		using std::basic_fstream;
@@ -89,10 +89,9 @@ namespace PNGStego {
 		Stream->write(reinterpret_cast<char *>(data), length);
 	}
 
-	PNGFile::PNGFile() : pixels(std::vector<BGRA>()), salt(std::vector<uint8_t>()), 
-	                        iv(std::vector<byte>()), outputEnabled(false), outputStream(&std::cout) { }
+	PNGFile::PNGFile() : pixels(), salt(), iv(), outputFn() { }
 
-	PNGFile::PNGFile(const PNGFile& other) : pixels(std::vector<BGRA>()), salt(std::vector<uint8_t>()) {
+	PNGFile::PNGFile(const PNGFile& other) : pixels(), salt() {
 		std::copy(other.pixels.begin(), other.pixels.end(), std::back_inserter(this->pixels));
 		std::copy(other.salt.begin(), other.salt.end(), std::back_inserter(this->salt));
 		for (int i = 0; i < CryptoPP::Serpent::BLOCKSIZE; ++i)
@@ -107,15 +106,14 @@ namespace PNGStego {
 		this->params.CompressionType = other.params.CompressionType;
 		this->params.FilterType      = other.params.FilterType;
 		this->params.Channels        = other.params.Channels;
-		this->outputEnabled          = other.outputEnabled;
-		this->outputStream           = other.outputStream;
+		this->outputFn               = other.outputFn;
 	}
 
 	PNGFile::PNGFile(PNGFile &&other) : PNGFile() {
 			other.swap(*this);
 	}
 
-	PNGFile::PNGFile(const std::string& filename) : outputEnabled(false), outputStream(&std::cout) {
+	PNGFile::PNGFile(const std::string& filename) : outputFn() {
 		this->load(filename);
 	}
 
@@ -134,8 +132,7 @@ namespace PNGStego {
 		std::swap(this->params.CompressionType, other.params.CompressionType);
 		std::swap(this->params.FilterType,      other.params.FilterType);
 		std::swap(this->params.Channels,        other.params.Channels);
-		std::swap(this->outputEnabled,          other.outputEnabled);
-		std::swap(this->outputStream,           other.outputStream);
+		std::swap(this->outputFn,               other.outputFn);
 	}
 
 	PNGFile& PNGFile::operator=(const PNGFile& other) {
@@ -158,7 +155,7 @@ namespace PNGStego {
 	}
 
 	void PNGFile::load(const std::string& filename) {
-		boost::nowide::ifstream File(filename.c_str(), std::ifstream::binary | std::ifstream::in);
+		boost::nowide::ifstream File(filename.c_str(), std::ifstream::in | std::ifstream::binary);
 		if (!File) {
 			throw std::invalid_argument("Cannot open " + filename);
 		}
@@ -211,7 +208,7 @@ namespace PNGStego {
 		png_read_info(PngPointer, InfoPointer);
 		params.Channels = png_get_channels(PngPointer, InfoPointer);
 		png_get_IHDR(PngPointer, InfoPointer, &params.width, &params.height, &params.BitDepth,
-			                     &params.ColorType, &params.InterlaceType, &params.CompressionType, &params.FilterType);
+		                         &params.ColorType, &params.InterlaceType, &params.CompressionType, &params.FilterType);
 		
 		// Convert to 32-bits if needed
 		png_set_strip_16(PngPointer);
@@ -333,7 +330,7 @@ namespace PNGStego {
 
 		// Set PNG parameters
 		png_set_IHDR(PngPointer, InfoPointer, params.width, params.height, params.BitDepth, params.BitsPerPixel == 24 ?
-			   PNG_COLOR_TYPE_RGB : PNG_COLOR_TYPE_RGBA, params.InterlaceType, params.CompressionType, params.FilterType);
+		       PNG_COLOR_TYPE_RGB : PNG_COLOR_TYPE_RGBA, params.InterlaceType, params.CompressionType, params.FilterType);
 
 		/*
 		  Instead of storing the image in a 2D-array, I store it in a 1D-array.
@@ -355,7 +352,7 @@ namespace PNGStego {
 		// without using const_cast on pixels.data(), I'd rather not do that.
 		png_set_rows(PngPointer, InfoPointer, RowPointers.data());
 		png_write_png(PngPointer, InfoPointer, params.BitsPerPixel == 24 ?
-			     PNG_TRANSFORM_STRIP_FILLER_AFTER : PNG_TRANSFORM_IDENTITY, NULL);
+		         PNG_TRANSFORM_STRIP_FILLER_AFTER : PNG_TRANSFORM_IDENTITY, NULL);
 		png_destroy_write_struct(&PngPointer, &InfoPointer);
 	}
 
@@ -417,8 +414,8 @@ namespace PNGStego {
 		}
 		PNGStego::zeroMemory(t.data(), t.size());
 
-		if (outputEnabled)
-			(*outputStream) << "Compressing data..." << std::endl;
+		if (outputFn)
+			outputFn("Compressing data...");
 		binaryData = PNGStego::bzip2::compress(binaryData);
 		dataSize = static_cast<uint32_t>(binaryData.size());
 		dataSize += (TAG_SIZE * 2);
@@ -428,8 +425,8 @@ namespace PNGStego {
 			boost::random::uniform_int_distribution<uint16_t> offset(PNG_MIN_OFFSET, PNG_MAX_OFFSET);
 			PNGStego::zeroMemory(&offsetSeed, sizeof(offsetSeed));
 
-			if (outputEnabled)
-				(*outputStream) << "Encrypting data..." << std::endl;
+			if (outputFn)
+				outputFn("Encrypting data...");
 
 			salt.resize(SALT_BYTES);
 			CryptoPP::OS_GenerateRandomBlock(true, salt.data(), salt.size());
@@ -439,32 +436,32 @@ namespace PNGStego {
 			binaryData = Encryption::encrypt(binaryData, key, iv, salt);
 			dataSize = static_cast<uint32_t>(binaryData.size());
 
-			if (outputEnabled)
-				(*outputStream) << "Embedding data..." << std::endl;
+			if (outputFn)
+				outputFn("Embedding data...");
 			int PixelPos = 0;
 			for (int i = 0; i < 8 * EXTENSION_BYTES; ++i) {
 				if (extensionSize & (1 << i)) {
-					pixels[PixelPos].RGBA.B |= 1;
+					pixels[PixelPos].blue |= 1;
 				}
 				else {
-					pixels[PixelPos].RGBA.B &= ~1;
+					pixels[PixelPos].blue &= ~1;
 				}
 				PixelPos += offset(gen);
 			}
 			for (int i = 0; i < 8 * SIZE_BYTES; ++i) {
 				if (dataSize & (1 << i)) {
-					pixels[PixelPos].RGBA.B |= 1;
+					pixels[PixelPos].blue |= 1;
 				}
 				else {
-					pixels[PixelPos].RGBA.B &= ~1;
+					pixels[PixelPos].blue &= ~1;
 				}
 				PixelPos += offset(gen);
 			}
 			for (size_t i = 0; i < dataSize * 8; ++i) {
 				if (binaryData[i / 8] & (1 << (i % 8)))
-					pixels[PixelPos].RGBA.B |= 1;
+					pixels[PixelPos].blue |= 1;
 				else
-					pixels[PixelPos].RGBA.B &= ~1;
+					pixels[PixelPos].blue &= ~1;
 				PixelPos += offset(gen);
 			}
 		}
@@ -473,7 +470,26 @@ namespace PNGStego {
 		}		
 	}
 
-	void PNGFile::decode(std::string filename, const std::string& key) const {
+	void PNGFile::decode(std::string filename, const std::string& key, std::vector<uint8_t> *backup) const {
+		std::vector<uint8_t> binaryData;
+		std::string extension;
+		this->decode(binaryData, extension, key);
+		filename += std::string(".") + extension;
+		boost::nowide::ofstream File(filename.c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
+		if (!File) {
+			if (backup) {
+				std::swap(*backup, binaryData);
+			}
+			PNGStego::zeroMemory(binaryData.data(), binaryData.capacity());
+			throw std::invalid_argument("Cannot open " + filename);
+		}
+		if (outputFn)
+			outputFn("Writing data...");
+		File.write(reinterpret_cast<char *>(binaryData.data()), binaryData.size());
+		PNGStego::zeroMemory(binaryData.data(), binaryData.capacity());
+	}
+
+	void PNGFile::decode(std::vector<uint8_t> &data, std::string& extension, const std::string& key) const {
 		if (pixels.empty()) {
 			throw std::runtime_error("Trying to extract data from an empty PNG");
 		}
@@ -498,46 +514,40 @@ namespace PNGStego {
 	
 		int PixelPos = 0;
 		for (int i = 0; i < 8 * EXTENSION_BYTES; ++i) {
-			extensionSize |= ((pixels[PixelPos].RGBA.B & 1) << i);
+			extensionSize |= ((pixels[PixelPos].blue & 1) << i);
 			PixelPos += offset(gen);
 		}
 		for (int i = 0; i < 8 * SIZE_BYTES; ++i) {
-			dataSize |= ((pixels[PixelPos].RGBA.B & 1) << i);
+			dataSize |= ((pixels[PixelPos].blue & 1) << i);
 			PixelPos += offset(gen);
 		}
 
 		if (dataSize <= capacity(offsetSeed)) {
 
 			std::vector<uint8_t> binaryData(dataSize);
-			if (outputEnabled)
-				(*outputStream) << "Extracting data..." << std::endl;
+			if (outputFn)
+				outputFn("Extracting data...");
 			for (size_t i = 0; i < dataSize * 8; ++i) {
-				if (pixels[PixelPos].RGBA.B & 1)
+				if (pixels[PixelPos].blue & 1)
 					binaryData[i / 8] |= (1 << (i % 8));
 				else
 					binaryData[i / 8] &= ~(1 << (i % 8));
 				PixelPos += offset(gen);
 			}
-			if (outputEnabled)
-				(*outputStream) << "Decrypting data..." << std::endl;
+			if (outputFn)
+				outputFn("Decrypting data...");
 			binaryData = Encryption::decrypt(binaryData, key, iv, salt);
-			if (outputEnabled)
-				(*outputStream) << "Decompressing data..." << std::endl;
+			if (outputFn)
+				outputFn("Decompressing data...");
 			binaryData = PNGStego::bzip2::decompress(binaryData);
 
-			if (extensionSize)
-				filename.push_back('.');
+			extension = std::string("");
 			for (uint8_t i = 0; i < extensionSize; ++i) {
-				filename.push_back(binaryData[i]);
+				extension.push_back(binaryData[i]);
 			}
 
-			if (outputEnabled)
-				(*outputStream) << "Writing data..." << std::endl;
-			boost::nowide::ofstream File(filename.c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
-			if (!File) {
-				throw std::invalid_argument("Cannot open " + filename);
-			}
-			File.write(reinterpret_cast<char *>(binaryData.data() + extensionSize), binaryData.size() - extensionSize);
+			data = std::vector<uint8_t>(binaryData.begin() + extensionSize, binaryData.end());
+			PNGStego::zeroMemory(binaryData.data(), binaryData.capacity());
 		}
 		else {
 			// Basically, if dataSize happens to be larger than the result of capacity()
@@ -546,22 +556,18 @@ namespace PNGStego {
 		}
 	}
 
-	bool PNGFile::getOutput() const {
-		return outputEnabled;
+	void PNGFile::setOutputFn(const std::function<void(const std::string&)>& fn) {
+		outputFn = fn;
 	}
 
-	void PNGFile::setOutput(bool output) {
-		outputEnabled = output;
-	}
-
-	void PNGFile::setOutputStream(std::ostream& stream) {
-		outputStream = &stream;
+	void PNGFile::setOutputFn(std::function<void(const std::string&)>&& fn) {
+		outputFn = fn;
 	}
 
 	/**
-	 * Reads IV
-	 * Gets data from 8 * IV_BYTES pixels that are in the middle of the image, using LSB of the red channel.
-	 */
+	 ** Reads IV
+	 ** Gets data from 8 * IV_BYTES pixels that are in the middle of the image, using LSB of the red channel.
+	 **/
 	void PNGFile::ReadIV() {
 		iv.resize(IV_BYTES);
 		size_t pos = pixels.size() / 2;
@@ -569,7 +575,7 @@ namespace PNGStego {
 			throw std::runtime_error("The image's too small");
 		pos -= (8 * IV_BYTES / 2);
 		for (size_t i = 0; i < 8 * IV_BYTES; ++i) {
-			if (pixels[pos + i].RGBA.R & 1)
+			if (pixels[pos + i].red & 1)
 				iv[i / 8] |= (1 << (i % 8));
 			else
 				iv[i / 8] &= ~(1 << (i % 8));
@@ -577,9 +583,9 @@ namespace PNGStego {
 	}
 
 	/**
-	* Writes IV
-	* Writes data to (8 * IV_BYTES) pixels that are in the middle of the image, using LSB of the red channel.
-	*/
+	 ** Writes IV
+	 ** Writes data to (8 * IV_BYTES) pixels that are in the middle of the image, using LSB of the red channel.
+	 **/
 	void PNGFile::WriteIV() {
 		size_t bits = iv.size() * 8;
 		size_t pos = pixels.size() / 2;
@@ -588,22 +594,22 @@ namespace PNGStego {
 		pos -= (bits / 2);
 		for (size_t i = 0; i < bits; ++i) {
 			if (iv[i / 8] & (1 << (i % 8)))
-				pixels[pos + i].RGBA.R |= 1;
+				pixels[pos + i].red |= 1;
 			else
-				pixels[pos + i].RGBA.R &= ~1;
+				pixels[pos + i].red &= ~1;
 		}
 	}
 
 	/**
-	* Reads IV
-	* Gets data from first (8 * SALT_BYTES) pixels, using LSB of the green channel.
-	*/
+	 ** Reads IV
+	 ** Gets data from first (8 * SALT_BYTES) pixels, using LSB of the green channel.
+	 **/
 	void PNGFile::ReadSalt() {
 		salt.resize(SALT_BYTES);
 		if (pixels.size() < SALT_BYTES * 8)
 			throw std::runtime_error("The image's too small");
 		for (size_t i = 0; i < 8 * SALT_BYTES; ++i) {
-			if (pixels[i].RGBA.G & 1)
+			if (pixels[i].green & 1)
 				salt[i / 8] |= (1 << (i % 8));
 			
 			else
@@ -612,18 +618,18 @@ namespace PNGStego {
 	}
 
 	/**
-	* Writes IV
-	* Writes data to first (8 * SALT_BYTES) pixels, using LSB of the green channel.
-	*/
+	 ** Writes IV
+	 ** Writes data to first (8 * SALT_BYTES) pixels, using LSB of the green channel.
+	 **/
 	void PNGFile::WriteSalt() {
 		size_t bits = salt.size() * 8;
 		if (pixels.size() < bits)
 			throw std::runtime_error("The image's too small");
 		for (size_t i = 0; i < bits; ++i) {
 			if (salt[i / 8] & (1 << (i % 8)))
-				pixels[i].RGBA.G |= 1;
+				pixels[i].green |= 1;
 			else
-				pixels[i].RGBA.G &= ~1;
+				pixels[i].green &= ~1;
 		}
 	}
 

@@ -50,6 +50,7 @@
 		014BE8ED1BCB010E00C3DA70 /* helperfunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = helperfunctions.cpp; path = ../src/helperfunctions.cpp; sourceTree = "<group>"; };
 		014BE8EE1BCB010E00C3DA70 /* main-stego.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "main-stego.cpp"; path = "../src/main-stego.cpp"; sourceTree = "<group>"; };
 		014BE8EF1BCB010E00C3DA70 /* pngwrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pngwrapper.cpp; path = ../src/pngwrapper.cpp; sourceTree = "<group>"; };
+		014E95981BD773F2002FC8AF /* pngstegoversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pngstegoversion.h; path = ../include/pngstegoversion.h; sourceTree = "<group>"; };
 		018525B81BCB052E003484E8 /* PNGDestego */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PNGDestego; sourceTree = BUILT_PRODUCTS_DIR; };
 		018525BF1BCB0566003484E8 /* main-destego.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "main-destego.cpp"; path = "../src/main-destego.cpp"; sourceTree = "<group>"; };
 		01E3A8D21BCAFFB600BB393C /* PNGStego */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PNGStego; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,6 +90,7 @@
 		014BE8E61BCB00CD00C3DA70 /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				014E95981BD773F2002FC8AF /* pngstegoversion.h */,
 				014BE8E71BCB00F200C3DA70 /* byteencryption.h */,
 				014BE8E81BCB00F200C3DA70 /* bz2compression.h */,
 				014BE8E91BCB00F200C3DA70 /* helperfunctions.h */,

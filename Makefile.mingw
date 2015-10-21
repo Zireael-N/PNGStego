@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = --std=c++11 -O3 -Wall -Wextra
-LIBS = -l"boost_nowide-mgw52-mt-1_59" -l"boost_iostreams-mgw52-mt-1_59" -lbz2 -lpng -lz -lcryptopp -static-libstdc++ -static-libgcc -static -lpthread
+LIBS = -lboost_nowide-mgw52-mt-1_59 -lboost_iostreams-mgw52-mt-1_59 -lbz2 -lpng -lz -lcryptopp -static-libstdc++ -static-libgcc -static -lpthread
 SOURCES = pngwrapper.cpp helperfunctions.cpp bz2compression.cpp byteencryption.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 
@@ -14,13 +14,13 @@ default: all
 
 all: $(ENCODER) $(DECODER)
 
-$(ENCODER): $(OBJECTS) $(SRCDIR)main-stego.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $@ $(SRCDIR)main-stego.cpp $(OBJECTS) $(LIBS)
+$(ENCODER): $(OBJECTS) $(SRCDIR)main-stego.cpp version.res $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h $(HEADERS)pngstegoversion.h
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $@ $(SRCDIR)main-stego.cpp $(OBJECTS) version.res $(LIBS)
 
-$(DECODER): $(OBJECTS) $(SRCDIR)main-destego.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $@ $(SRCDIR)main-destego.cpp $(OBJECTS) $(LIBS)
+$(DECODER): $(OBJECTS) $(SRCDIR)main-destego.cpp version.res $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h $(HEADERS)pngstegoversion.h
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $@ $(SRCDIR)main-destego.cpp $(OBJECTS) version.res $(LIBS)
 
-pngwrapper.o: $(SRCDIR)pngwrapper.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h
+pngwrapper.o: $(SRCDIR)pngwrapper.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h $(HEADERS)pngstegoversion.h
 	$(CXX) $(CXXFLAGS) -I$(HEADERS) -c $(SRCDIR)pngwrapper.cpp
 
 helperfunctions.o: $(SRCDIR)helperfunctions.cpp $(HEADERS)helperfunctions.h
@@ -32,7 +32,10 @@ bz2compression.o: $(SRCDIR)bz2compression.cpp $(HEADERS)bz2compression.h
 byteencryption.o: $(SRCDIR)byteencryption.cpp $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h
 	$(CXX) $(CXXFLAGS) -I$(HEADERS) -c $(SRCDIR)byteencryption.cpp
 
+version.res: ./msvc/version.rc
+	windres ./msvc/version.rc -O coff -o $@
+
 
 .PHONY: clean
 clean: 
-	DEL /F /Q $(OBJECTS) $(ENCODER) $(DECODER)
+	DEL /F /Q $(OBJECTS) $(ENCODER) $(DECODER) version.res

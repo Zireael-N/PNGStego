@@ -7,7 +7,6 @@
 
 #include <vector>
 #include <array>
-#include <cstdint>
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -29,31 +28,36 @@
 namespace PNGStego {
 namespace Encryption {
 
-	std::vector<uint8_t> encrypt(const std::vector<uint8_t> &source, const std::string &key, const std::vector<byte> &iv, const std::vector<byte> &salt) {
+	std::vector<uint8_t> encrypt(const std::vector<uint8_t> &source, const std::string &key,
+	                             const std::vector<byte> &iv, const std::vector<byte> &salt) {
 		constexpr int keylength = CryptoPP::AES::MAX_KEYLENGTH + CryptoPP::Serpent::MAX_KEYLENGTH;
 
 		std::array<byte, keylength> hashedKey = hashKey<keylength>(key, salt);
 		std::vector<uint8_t> encrypted;
-		encrypted = SerpentEncrypt(source, hashedKey.data() + CryptoPP::AES::MAX_KEYLENGTH, CryptoPP::Serpent::MAX_KEYLENGTH, iv.data(), iv.size());
+		encrypted = SerpentEncrypt(source, hashedKey.data() + CryptoPP::AES::MAX_KEYLENGTH,
+			                                                  CryptoPP::Serpent::MAX_KEYLENGTH, iv.data(), iv.size());
 		encrypted = AESEncrypt(encrypted, hashedKey.data(), CryptoPP::AES::MAX_KEYLENGTH, iv.data(), iv.size());
 		PNGStego::zeroMemory(hashedKey.data(), hashedKey.size());
 
 		return encrypted;
 	}
 
-	std::vector<uint8_t> decrypt(const std::vector<uint8_t> &source, const std::string &key, const std::vector<byte> &iv, const std::vector<byte> &salt) {
+	std::vector<uint8_t> decrypt(const std::vector<uint8_t> &source, const std::string &key,
+	                             const std::vector<byte> &iv, const std::vector<byte> &salt) {
 		constexpr int keylength = CryptoPP::AES::MAX_KEYLENGTH + CryptoPP::Serpent::MAX_KEYLENGTH;
 
 		std::array<byte, keylength> hashedKey = hashKey<keylength>(key, salt);
 		std::vector<uint8_t> decrypted;
 		decrypted = AESDecrypt(source, hashedKey.data(), CryptoPP::AES::MAX_KEYLENGTH, iv.data(), iv.size());
-		decrypted = SerpentDecrypt(decrypted, hashedKey.data() + CryptoPP::AES::MAX_KEYLENGTH, CryptoPP::Serpent::MAX_KEYLENGTH, iv.data(), iv.size());
+		decrypted = SerpentDecrypt(decrypted, hashedKey.data() + CryptoPP::AES::MAX_KEYLENGTH,
+		                                                        CryptoPP::Serpent::MAX_KEYLENGTH, iv.data(), iv.size());
 		PNGStego::zeroMemory(hashedKey.data(), hashedKey.size());
 
 		return decrypted;
 	}
 
-	std::vector<uint8_t> AESEncrypt(const std::vector<uint8_t> &source, const byte *key, size_t keylength, const byte *iv, size_t ivlength) {
+	std::vector<uint8_t> AESEncrypt(const std::vector<uint8_t> &source, const byte *key, size_t keylength,
+	                                                                    const byte *iv,  size_t ivlength) {
 		std::string encrypted;
 		CryptoPP::GCM< CryptoPP::AES >::Encryption e;
 		e.SetKeyWithIV(key, keylength, iv, ivlength);
@@ -66,7 +70,8 @@ namespace Encryption {
 		return PNGStego::stringToVector(encrypted);
 	}
 
-	std::vector<uint8_t> AESDecrypt(const std::vector<uint8_t> &source, const byte *key, size_t keylength, const byte *iv, size_t ivlength) {
+	std::vector<uint8_t> AESDecrypt(const std::vector<uint8_t> &source, const byte *key, size_t keylength,
+	                                                                    const byte *iv,  size_t ivlength) {
 		std::string decrypted;
 		CryptoPP::GCM< CryptoPP::AES >::Decryption d;
 		d.SetKeyWithIV(key, keylength, iv, ivlength);
@@ -86,7 +91,8 @@ namespace Encryption {
 		return PNGStego::stringToVector(decrypted);
 	}
 
-	std::vector<uint8_t> SerpentEncrypt(const std::vector<uint8_t> &source, const byte *key, size_t keylength, const byte *iv, size_t ivlength) {
+	std::vector<uint8_t> SerpentEncrypt(const std::vector<uint8_t> &source, const byte *key, size_t keylength,
+	                                                                        const byte *iv,  size_t ivlength) {
 		std::string encrypted;
 		CryptoPP::GCM< CryptoPP::Serpent >::Encryption e;
 		e.SetKeyWithIV(key, keylength, iv, ivlength);
@@ -99,7 +105,8 @@ namespace Encryption {
 		return PNGStego::stringToVector(encrypted);
 	}
 
-	std::vector<uint8_t> SerpentDecrypt(const std::vector<uint8_t> &source, const byte *key, size_t keylength, const byte *iv, size_t ivlength) {
+	std::vector<uint8_t> SerpentDecrypt(const std::vector<uint8_t> &source, const byte *key, size_t keylength,
+	                                                                        const byte *iv,  size_t ivlength) {
 		std::string decrypted;
 		CryptoPP::GCM< CryptoPP::Serpent >::Decryption d;
 		d.SetKeyWithIV(key, keylength, iv, ivlength);

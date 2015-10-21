@@ -12,19 +12,12 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include <cstdint>
 
 #if defined(_WIN32)
 #include <boost/nowide/convert.hpp>
 #define DIRECTORYDELIM '\\'
 #elif defined(__unix__) || defined(__APPLE__)
 #define DIRECTORYDELIM '/'
-#endif
-
-#ifdef _WIN32
-#include <Windows.h>
-#elif defined(__GNUC__) || defined (__APPLE__)
-#include <cstring>
 #endif
 
 namespace PNGStego {
@@ -77,9 +70,9 @@ namespace PNGStego {
 	std::ifstream::pos_type fileSize(const std::string &filename)
 	{
 #if defined(__MINGW32__)
-		HANDLE in = CreateFileW(boost::nowide::widen(filename).c_str(), GENERIC_READ, 
-			FILE_SHARE_READ, NULL, OPEN_EXISTING, 
-			FILE_ATTRIBUTE_NORMAL, NULL);
+		HANDLE in = CreateFileW(boost::nowide::widen(filename).c_str(),
+		    GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 
+		    FILE_ATTRIBUTE_NORMAL, NULL);
 		if (in==INVALID_HANDLE_VALUE)
 			throw std::runtime_error("Couldn't open the file");
 
@@ -130,27 +123,5 @@ namespace PNGStego {
 		std::copy(source.begin(), source.end(), std::back_inserter(result));
 		return result;
 	}
-
-#if defined (__GNUC__) || defined (__MINGW32__)
-	void zeroMemory(void *dest, size_t size) {
-		memset(dest, 0x00, size);
-		asm volatile ("" : : : "memory");
-	}
-#elif defined(_WIN32)
-	void* zeroMemory(void *dest, size_t size) {
-		return SecureZeroMemory(dest, size);
-	}
-#elif defined (__APPLE__)
-	errno_t zeroMemory(void *dest, size_t size) {
-		return memset_s(dest, size, 0x00, size);
-	}
-#else
-	void* zeroMemory(void *dest, size_t size) {
-		volatile char *t = static_cast<volatile char*>(dest);
-		while (size--)
-			*t++ = 0;
-		return dest;
-	}
-#endif
 
 } // namespace PNGStego

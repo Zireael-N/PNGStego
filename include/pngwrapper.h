@@ -11,7 +11,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <cstdint>
+#include <functional>
 #include <cryptopp/serpent.h>
 
 typedef unsigned char byte;
@@ -21,10 +21,10 @@ namespace PNGStego {
 class PNGFile {
 public:
 	/**
-	 * Creates an empty object
-	 * It's necessary to load an image
-	 * If you wish to further work with it
-	 */
+	 ** Creates an empty object
+	 ** It's necessary to load an image
+	 ** If you wish to further work with it
+	 **/
 	PNGFile();
 	/** Loads a PNG file from a file with the given filename */
 	PNGFile(const std::string& filename);
@@ -57,18 +57,17 @@ public:
 	uint32_t capacity(uint32_t seed) const;
 	/** Embeds data from a file with the given filename into the PNG file, using the given key. */
 	void encode(const std::string& filename, const std::string& key);
-	/** Extracts data from the PNG file using the given key and saves it into a file with the given filename. */
-	void decode(std::string filename, const std::string& key) const;
-
-	/** Returns whether the PNGFile class outputs its actions into a stream */
-	bool getOutput() const;
-	/** Sets whether the PNGFile class should output its actions into a stream */
-	void setOutput(bool output);
 	/**
-	 * Sets a stream where the PNGFile should output its actions
-	 * By default it's std::cout
-	 */
-	void setOutputStream(std::ostream& stream);
+	 ** Extracts data from the PNG file using the given key and saves it into a file with the given
+	 ** filename. In case of file I/O failure if the 3rd parameter is not nullptr, puts data there.
+	 **/
+	void decode(std::string filename, const std::string& key, std::vector<uint8_t> *backup = nullptr) const;
+	/** Extracts data from the PNG file using the given key, puts it into the 1st and 2nd parameters. */
+	void decode(std::vector<uint8_t> &data, std::string& extension, const std::string& key) const;
+
+	/** Sets a function that gets called each time decode/encode do something */
+	void setOutputFn(const std::function<void(const std::string&)>& fn);
+	void setOutputFn(std::function<void(const std::string&)>&& fn);
 	~PNGFile();
 private:
 	struct {
@@ -76,20 +75,17 @@ private:
 		int32_t BitDepth, ColorType, InterlaceType, CompressionType, FilterType, Channels;
 	} params;
 
-	union BGRA
-	{
-		uint32_t Color;
-		struct
-		{
-			unsigned char B, G, R, A;
-		} RGBA;
+	struct Pixel {
+		uint8_t blue;
+		uint8_t green;
+		uint8_t red;
+		uint8_t alpha;
 	};
 	
-	std::vector<BGRA> pixels;	
+	std::vector<Pixel> pixels;	
 	std::vector<uint8_t> salt;
 	std::vector<byte> iv;
-	bool outputEnabled;
-	std::ostream *outputStream;
+	std::function<void(const std::string &)> outputFn;
 
 	void ReadIV();
 	void WriteIV();
