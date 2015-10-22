@@ -89,7 +89,9 @@ namespace PNGStego {
 		Stream->write(reinterpret_cast<char *>(data), length);
 	}
 
-	PNGFile::PNGFile() : pixels(), salt(), iv(), outputFn() { }
+	PNGFile::PNGFile() : pixels(), salt(), iv(), outputFn(),
+		CSPRNG(std::bind(CryptoPP::OS_GenerateRandomBlock, true, std::placeholders::_1, std::placeholders::_2))
+	{ }
 
 	PNGFile::PNGFile(const PNGFile& other) : pixels(), salt() {
 		this->pixels                 = other.pixels;
@@ -106,14 +108,23 @@ namespace PNGStego {
 		this->params.FilterType      = other.params.FilterType;
 		this->params.Channels        = other.params.Channels;
 		this->outputFn               = other.outputFn;
+		this->CSPRNG                 = other.CSPRNG;
 	}
 
 	PNGFile::PNGFile(PNGFile &&other) : PNGFile() {
 			other.swap(*this);
 	}
 
-	PNGFile::PNGFile(const std::string& filename) : outputFn() {
+	PNGFile::PNGFile(const std::string& filename) : outputFn(),
+		CSPRNG(std::bind(CryptoPP::OS_GenerateRandomBlock, true, std::placeholders::_1, std::placeholders::_2))
+	{
 		this->load(filename);
+	}
+
+	PNGFile::PNGFile(std::istream& stream) : outputFn(),
+		CSPRNG(std::bind(CryptoPP::OS_GenerateRandomBlock, true, std::placeholders::_1, std::placeholders::_2))
+	{
+		this->load(stream);
 	}
 
 	void PNGFile::swap(PNGFile &other) {
@@ -131,6 +142,7 @@ namespace PNGStego {
 		std::swap(this->params.FilterType,      other.params.FilterType);
 		std::swap(this->params.Channels,        other.params.Channels);
 		std::swap(this->outputFn,               other.outputFn);
+		std::swap(this->CSPRNG,                 other.CSPRNG);
 	}
 
 	PNGFile& PNGFile::operator=(const PNGFile& other) {
@@ -150,6 +162,18 @@ namespace PNGStego {
 	PNGFile& PNGFile::operator=(const std::string& container) {
 		this->load(container);
 		return *this;
+	}
+
+	uint32_t PNGFile::getWidth() {
+		return this->params.width;
+	}
+
+	uint32_t PNGFile::getHeight() {
+		return this->params.height;
+	}
+
+	const std::vector<PNGFile::Pixel>& PNGFile::getPixels() {
+		return this->pixels;
 	}
 
 	void PNGFile::load(const std::string& filename) {
@@ -383,26 +407,36 @@ namespace PNGStego {
 	}
 
 	void PNGFile::encode(const std::string& filename, const std::string& key) {
-		if (pixels.empty()) {
-			throw std::runtime_error("Trying to encode data into an empty PNG");
-		}
-		if (key.empty()) {
-			throw std::runtime_error("An empty key was given");
-		}
-
 		boost::nowide::ifstream File(filename.c_str(), std::ios::in | std::ios::binary);
 		if (!File) {
 			throw std::invalid_argument("Cannot open " + filename);
 		}
 		std::string extension = getExtension(filename);
 		uint32_t dataSize = static_cast<uint32_t>(fileSize(filename));
-		uint8_t extensionSize = static_cast<uint8_t>(extension.size());
+		std::vector<uint8_t> binaryData(dataSize);
+		File.read(reinterpret_cast<char *>(binaryData.data()), dataSize);
+
+		this->encode(binaryData, extension, key);
+	}
+
+	void PNGFile::encode(const std::vector<uint8_t> &data, const std::string& extension, const std::string& key) {
+		if (pixels.empty()) {
+			throw std::runtime_error("Trying to encode data into an empty PNG");
+		}
+		if (key.empty()) {
+			throw std::invalid_argument("An empty key was given");
+		}
+		if (!CSPRNG) {
+			throw std::runtime_error("CSPRNG is not set.");
+		}
+
+		uint8_t extensionSize = static_cast<uint8_t>(extension.length());
 		std::vector<uint8_t> binaryData(stringToVector(extension));
-		binaryData.resize(extensionSize + dataSize);
-		File.read(reinterpret_cast<char *>(binaryData.data() + extensionSize), dataSize);
+		binaryData.resize(extensionSize + data.size());
+		std::copy(data.begin(), data.end(), binaryData.begin() + extensionSize);
 
 		iv.resize(IV_BYTES);
-		CryptoPP::OS_GenerateRandomBlock(true, iv.data(), iv.size());
+		this->CSPRNG(iv.data(), iv.size());
 
 		std::array<uint8_t, 4> t = PNGStego::Encryption::hashKey<4, 150000>(key, iv);
 		uint32_t offsetSeed = 0;
@@ -415,7 +449,7 @@ namespace PNGStego {
 		if (outputFn)
 			outputFn("Compressing data...");
 		binaryData = PNGStego::bzip2::compress(binaryData);
-		dataSize = static_cast<uint32_t>(binaryData.size());
+		uint32_t dataSize = static_cast<uint32_t>(binaryData.size());
 		dataSize += (TAG_SIZE * 2);
 
 		if (dataSize <= capacity(offsetSeed)) {
@@ -427,7 +461,7 @@ namespace PNGStego {
 				outputFn("Encrypting data...");
 
 			salt.resize(SALT_BYTES);
-			CryptoPP::OS_GenerateRandomBlock(true, salt.data(), salt.size());
+			this->CSPRNG(salt.data(), salt.size());
 			this->WriteSalt();
 			this->WriteIV();
 
@@ -465,7 +499,7 @@ namespace PNGStego {
 		}
 		else {
 			throw std::runtime_error("The image can't contain data that large");
-		}		
+		}
 	}
 
 	void PNGFile::decode(std::string filename, const std::string& key, std::vector<uint8_t> *backup) const {
@@ -541,9 +575,11 @@ namespace PNGStego {
 				outputFn("Decompressing data...");
 			binaryData = PNGStego::bzip2::decompress(binaryData);
 
-			extension = std::string("");
-			for (uint8_t i = 0; i < extensionSize; ++i) {
-				extension.push_back(binaryData[i]);
+			if (extensionSize) {
+				extension = std::string(binaryData.begin(), binaryData.begin() + extensionSize);
+			}
+			else {
+				extension = std::string("");
 			}
 
 			data = std::vector<uint8_t>(binaryData.begin() + extensionSize, binaryData.end());
@@ -562,6 +598,14 @@ namespace PNGStego {
 
 	void PNGFile::setOutputFn(std::function<void(const std::string&)>&& fn) {
 		outputFn = fn;
+	}
+
+	void PNGFile::setCSPRNG(const std::function<void(uint8_t *, size_t)>& fn) {
+		CSPRNG = fn;
+	}
+
+	void PNGFile::setCSPRNG(std::function<void(uint8_t *, size_t)>&& fn) {
+		CSPRNG = fn;
 	}
 
 	/**

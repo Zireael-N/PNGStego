@@ -181,7 +181,7 @@ $ brew install cryptopp
 $ brew install boost
 ```
 
-Then you can either use Xcode or just build it with terminal.
+Then you can either use Xcode or just build it with a terminal.
 
 #### Xcode
 You'll need to use the Xcode project from this repository. Make a few changes:
@@ -210,7 +210,7 @@ These three parameters should look like this afterwards:
 ```
 CXXFLAGS = --std=c++11 -O3 -Wall -Wextra -isystem /usr/local/include
 LIBS = -L/usr/local/lib -lboost_iostreams -lbz2 -lcryptopp -lpthread -lpng -lz
-TESTSLIBS = -L/usr/local/lib -lboost_iostreams -lbz2 -lcryptopp -lpthread
+TESTSLIBS = -L/usr/local/lib -lboost_iostreams -lbz2 -lcryptopp -lpthread -lpng -lz
 ```
 
 Once you're done with editing Makefile, execute this in your terminal to build binaries: 

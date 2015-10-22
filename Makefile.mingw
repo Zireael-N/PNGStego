@@ -8,7 +8,7 @@ SRCDIR = ./src/
 HEADERS = ./include/
 
 TESTSDIR = ./tests/
-TESTSLIBS = -lboost_iostreams-mgw52-mt-1_59 -lbz2 -lcryptopp -lpthread
+TESTSLIBS = -lboost_iostreams-mgw52-mt-1_59 -lbz2 -lcryptopp -lpthread -lpng -lz
 
 ENCODER = PNGStego.exe
 DECODER = PNGDeStego.exe
@@ -44,18 +44,22 @@ clean:
 	DEL /F /Q $(OBJECTS) $(ENCODER) $(DECODER) version.res
 
 clean-test:
-	DEL /F /Q $(subst /,\,$(TESTSDIR)test-byteencryption.exe $(TESTSDIR)test-helperfunctions.exe $(TESTSDIR)test-bz2compression.exe)
+	DEL /F /Q $(subst /,\,$(TESTSDIR)test-helperfunctions.exe $(TESTSDIR)test-bz2compression.exe $(TESTSDIR)test-byteencryption.exe $(TESTSDIR)test-steganography.exe)
 
-test: $(TESTSDIR)test-byteencryption.exe $(TESTSDIR)test-helperfunctions.exe $(TESTSDIR)test-bz2compression.exe
-	$(TESTSDIR)test-byteencryption.exe
+test: $(TESTSDIR)test-helperfunctions.exe $(TESTSDIR)test-bz2compression.exe $(TESTSDIR)test-byteencryption.exe $(TESTSDIR)test-steganography.exe
 	$(TESTSDIR)test-helperfunctions.exe
 	$(TESTSDIR)test-bz2compression.exe
-
-$(TESTSDIR)test-byteencryption.exe: $(TESTSDIR)test-byteencryption.cpp $(HEADERS)byteencryption.h byteencryption.o helperfunctions.o
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-byteencryption.exe $(TESTSDIR)test-byteencryption.cpp byteencryption.o helperfunctions.o $(TESTSLIBS)
+	$(TESTSDIR)test-byteencryption.exe
+	$(TESTSDIR)test-steganography.exe
 
 $(TESTSDIR)test-helperfunctions.exe: $(TESTSDIR)test-helperfunctions.cpp $(HEADERS)helperfunctions.h helperfunctions.o
 	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-helperfunctions.exe $(TESTSDIR)test-helperfunctions.cpp helperfunctions.o $(TESTSLIBS)
 
-$(TESTSDIR)test-bz2compression.exe: $(TESTSDIR)test-bz2compression.cpp $(HEADERS)bz2compression.h bz2compression.o
+$(TESTSDIR)test-bz2compression.exe: $(TESTSDIR)test-bz2compression.cpp $(TESTSDIR)test-bz2compression.h $(HEADERS)bz2compression.h bz2compression.o
 	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-bz2compression.exe $(TESTSDIR)test-bz2compression.cpp bz2compression.o $(TESTSLIBS)
+
+$(TESTSDIR)test-byteencryption.exe: $(TESTSDIR)test-byteencryption.cpp $(TESTSDIR)test-byteencryption.h $(HEADERS)byteencryption.h byteencryption.o helperfunctions.o
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-byteencryption.exe $(TESTSDIR)test-byteencryption.cpp byteencryption.o helperfunctions.o $(TESTSLIBS)
+
+$(TESTSDIR)test-steganography.exe: $(TESTSDIR)test-steganography.cpp $(TESTSDIR)test-steganography.h $(HEADERS)pngwrapper.h $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-steganography.exe $(TESTSDIR)test-steganography.cpp $(OBJECTS) $(TESTSLIBS)

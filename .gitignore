@@ -13,6 +13,9 @@
 !/tests/
 /tests/*
 !/tests/*.cpp
+!/tests/*.h
+!/tests/original.png
+!/tests/container.png
 
 !/include/
 /include/*

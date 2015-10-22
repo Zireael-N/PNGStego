@@ -69,12 +69,12 @@ namespace PNGStego {
 
 	std::ifstream::pos_type fileSize(const std::string &filename)
 	{
-#if defined(__MINGW32__)
+#ifdef _WIN32
 		HANDLE in = CreateFileW(boost::nowide::widen(filename).c_str(),
 		    GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 
 		    FILE_ATTRIBUTE_NORMAL, NULL);
 		if (in==INVALID_HANDLE_VALUE)
-			throw std::runtime_error("Couldn't open the file");
+			throw std::invalid_argument("Couldn't open " + filename);
 
 		LARGE_INTEGER size;
 		if (!GetFileSizeEx(in, &size))
@@ -86,14 +86,10 @@ namespace PNGStego {
 		CloseHandle(in);
 		return size.QuadPart;
 #else
-	#if defined(_WIN32)
-		std::ifstream in(boost::nowide::widen(filename), std::ifstream::ate | std::ifstream::binary);
-	#else
-		std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
-	#endif
-		if (!in)
-			throw std::runtime_error("Couldn't open the file");
-		return in.tellg();
+	std::ifstream in(filename, std::ifstream::ate | std::ifstream::binary);
+	if (!in)
+		throw std::invalid_argument("Couldn't open " + filename);
+	return in.tellg();
 #endif
 	}
 
@@ -128,9 +124,7 @@ namespace PNGStego {
 	}
 
 	std::vector<uint8_t> stringToVector(const std::string &source) {
-		std::vector<uint8_t> result;
-		std::copy(source.begin(), source.end(), std::back_inserter(result));
-		return result;
+		return std::vector<uint8_t>(source.begin(), source.end());
 	}
 
 } // namespace PNGStego

@@ -11,6 +11,40 @@
 #include <tuple>
 #include "helperfunctions.h"
 
+bool testGetExtension();
+bool testAddToFilename();
+bool testShortenFilename();
+bool testCutLineEndings();
+bool testEndsWith();
+bool testStringToVector();
+
+#define TEST(name, fn)  std::cout << name;             \
+                        ++tests;                       \
+                        if (fn()) {                    \
+                            std::cout << "PASSED!\n";  \
+                            ++successes;               \
+                        } else {                       \
+                            std::cout << "FAILED!\n";  \
+                        }
+
+int main() {
+	int tests = 0;
+	int successes = 0;
+
+	TEST("Testing getExtension()...: ", testGetExtension)
+	TEST("Testing addToFilename()...: ", testAddToFilename)
+	TEST("Testing shortenFilename()...: ", testShortenFilename)
+	TEST("Testing cutLineEndings()...: ", testCutLineEndings)
+	TEST("Testing endsWith()...: ", testEndsWith)
+	TEST("Testing stringToVector()...: ", testStringToVector)
+
+	std::cout << "\nTESTS: " << tests;
+	std::cout << "\nPASSED: " << successes;
+	std::cout << "\nFAILED: " << tests - successes << std::endl;
+
+	return !(successes == tests);
+}
+
 #if defined(_WIN32)
 #define HOMEDIR "C:\\Users\\Test\\"
 #else
@@ -120,70 +154,4 @@ bool testStringToVector() {
 			return false;
 	}
 	return true;
-}
-
-
-int main() {
-	int tests = 0;
-	int successes = 0;
-
-	std::cout << "Testing getExtension()...: ";
-	++tests;
-	if (testGetExtension()) {
-		std::cout << "PASSED!\n";
-		++successes;
-	} else {
-		std::cout << "FAILED!\n";
-	}
-
-	std::cout << "Testing addToFilename()...: ";
-	++tests;
-	if (testAddToFilename()) {
-		std::cout << "PASSED!\n";
-		++successes;
-	} else {
-		std::cout << "FAILED!\n";
-	}
-
-	std::cout << "Testing shortenFilename()...: ";
-	++tests;
-	if (testShortenFilename()) {
-		std::cout << "PASSED!\n";
-		++successes;
-	} else {
-		std::cout << "FAILED!\n";
-	}
-
-	std::cout << "Testing cutLineEndings()...: ";
-	++tests;
-	if (testCutLineEndings()) {
-		std::cout << "PASSED!\n";
-		++successes;
-	} else {
-		std::cout << "FAILED!\n";
-	}
-
-	std::cout << "Testing endsWith()...: ";
-	++tests;
-	if (testEndsWith()) {
-		std::cout << "PASSED!\n";
-		++successes;
-	} else {
-		std::cout << "FAILED!\n";
-	}
-
-	std::cout << "Testing stringToVector()...: ";
-	++tests;
-	if (testStringToVector()) {
-		std::cout << "PASSED!\n";
-		++successes;
-	} else {
-		std::cout << "FAILED!\n";
-	}
-
-	std::cout << "\nTESTS: " << tests;
-	std::cout << "\nPASSED: " << successes;
-	std::cout << "\nFAILED: " << tests - successes << std::endl;
-
-	return !(successes == tests);
 }
