@@ -1,6 +1,7 @@
 /*
 !/.gitignore
-!./gitattributes
+!/.gitattributes
+!/.travis.yml
 !/Makefile
 !/Makefile.mingw
 !/README.md

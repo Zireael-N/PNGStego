@@ -8,7 +8,6 @@ SRCDIR = ./src/
 HEADERS = ./include/
 
 TESTSDIR = ./tests/
-TESTSLIBS = -lboost_iostreams -lbz2 -lcryptopp -lpthread -lpng -lz
 
 ENCODER = pngstego
 DECODER = pngdestego
@@ -63,13 +62,13 @@ test: $(TESTSDIR)test-helperfunctions $(TESTSDIR)test-bz2compression $(TESTSDIR)
 	$(TESTSDIR)test-steganography
 
 $(TESTSDIR)test-helperfunctions: $(TESTSDIR)test-helperfunctions.cpp $(HEADERS)helperfunctions.h helperfunctions.o
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-helperfunctions $(TESTSDIR)test-helperfunctions.cpp helperfunctions.o $(TESTSLIBS)
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-helperfunctions $(TESTSDIR)test-helperfunctions.cpp helperfunctions.o $(LIBS)
 
 $(TESTSDIR)test-bz2compression: $(TESTSDIR)test-bz2compression.cpp $(TESTSDIR)test-bz2compression.h $(HEADERS)bz2compression.h bz2compression.o
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-bz2compression $(TESTSDIR)test-bz2compression.cpp bz2compression.o $(TESTSLIBS)
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-bz2compression $(TESTSDIR)test-bz2compression.cpp bz2compression.o $(LIBS)
 
 $(TESTSDIR)test-byteencryption: $(TESTSDIR)test-byteencryption.cpp $(TESTSDIR)test-byteencryption.h $(HEADERS)byteencryption.h byteencryption.o helperfunctions.o
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-byteencryption $(TESTSDIR)test-byteencryption.cpp byteencryption.o helperfunctions.o $(TESTSLIBS)
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-byteencryption $(TESTSDIR)test-byteencryption.cpp byteencryption.o helperfunctions.o $(LIBS)
 
 $(TESTSDIR)test-steganography: $(TESTSDIR)test-steganography.cpp $(TESTSDIR)test-steganography.h $(HEADERS)pngwrapper.h $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-steganography $(TESTSDIR)test-steganography.cpp $(OBJECTS) $(TESTSLIBS)
+	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-steganography $(TESTSDIR)test-steganography.cpp $(OBJECTS) $(LIBS)

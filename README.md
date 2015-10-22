@@ -1,4 +1,4 @@
-# PNGStego
+# PNGStego [![Build Status](https://travis-ci.org/Zireael-N/PNGStego.svg?branch=master)](https://travis-ci.org/Zireael-N/PNGStego)
 
 ## About
 
@@ -203,14 +203,13 @@ To change where Xcode will create binaries. Now you can build the project.
 
 You'll still need to have a compiler obviously. Either install Xcode's command line tools or get yourself gcc from Homebrew.
 
-You'll need to edit Makefile. Add `-isystem /usr/local/include` to `CXXFLAGS`. Add `-L/usr/local/lib` to `LIBS` and, if you wish to build tests, to `TESTSLIBS`. Your headers and libraries should be symlinked there, as of now, Homebrew does this automatically.
+You'll need to edit Makefile. Add `-isystem /usr/local/include` to `CXXFLAGS`. Add `-L/usr/local/lib` to `LIBS`. Your headers and libraries should be symlinked there, as of now, Homebrew does this automatically.
 
-These three parameters should look like this afterwards:
+These two parameters should look like this afterwards:
 
 ```
 CXXFLAGS = --std=c++11 -O3 -Wall -Wextra -isystem /usr/local/include
 LIBS = -L/usr/local/lib -lboost_iostreams -lbz2 -lcryptopp -lpthread -lpng -lz
-TESTSLIBS = -L/usr/local/lib -lboost_iostreams -lbz2 -lcryptopp -lpthread -lpng -lz
 ```
 
 Once you're done with editing Makefile, execute this in your terminal to build binaries: 
