@@ -22,13 +22,6 @@
                             std::cout << "FAILED!\n";  \
                         }
 
-
-#if defined(_WIN32)
-#define TESTDIR ".\\tests\\"
-#else
-#define TESTDIR "./tests/"
-#endif
-
 int main() {
 	std::cout << "Initialization: ";
 	init();
@@ -39,6 +32,7 @@ int main() {
 
 	TEST("Testing encode() with precomputed data...: ", testEncode)
 	TEST("Testing decode() with precomputed data...: ", testDecode)
+	TEST("Testing decode() with data previously calculated with encode()...: ", testDecodeSelf)
 
 	std::cout << "\nTESTS: " << tests;
 	std::cout << "\nPASSED: " << successes;
@@ -50,12 +44,14 @@ int main() {
 using namespace PNGStego;
 
 PNGFile original;
+PNGFile precalculatedContainer;
 PNGFile container;
 
-inline bool fileExists(const std::string& name) {
-	std::ifstream f(name);
-	return f.good();
-}
+#if defined(_WIN32)
+#define TESTDIR ".\\tests\\"
+#else
+#define TESTDIR "./tests/"
+#endif
 
 void init() {
 	if (fileExists(TESTDIR "original.png")) {
@@ -67,27 +63,35 @@ void init() {
 	}
 
 	if (fileExists(TESTDIR "container.png")) {
-		container.load(TESTDIR "container.png");
+		precalculatedContainer.load(TESTDIR "container.png");
 	} else if (fileExists("container.png")) {
-		container.load("container.png");
+		precalculatedContainer.load("container.png");
 	} else {
 		exit(1);
 	}
 }
 
 bool testEncode() {
-	PNGFile temp(original);
+	container = original;
 
 	// Instead of using a PRNG fill IV and Salt with predefined values
-	temp.setCSPRNG(std::bind(memset, std::placeholders::_1, 0x7F, std::placeholders::_2));
-	temp.encode(encodedData, encodedExtension, password);
+	container.setCSPRNG(std::bind(memset, std::placeholders::_1, 0x7F, std::placeholders::_2));
+	container.encode(encodedData, encodedExtension, password);
 
-	return temp.getPixels() == container.getPixels() &&
-	       temp.getWidth()  == container.getWidth()  &&
-	       temp.getHeight() == container.getHeight();
+	return container.getPixels() == precalculatedContainer.getPixels() &&
+	       container.getWidth()  == precalculatedContainer.getWidth()  &&
+	       container.getHeight() == precalculatedContainer.getHeight();
 }
 
 bool testDecode() {
+	std::vector<uint8_t> temp1;
+	std::string temp2;
+	precalculatedContainer.decode(temp1, temp2, password);
+	return temp1 == encodedData &&
+	       temp2 == encodedExtension;
+}
+
+bool testDecodeSelf() {
 	std::vector<uint8_t> temp1;
 	std::string temp2;
 	container.decode(temp1, temp2, password);
