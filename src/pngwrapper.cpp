@@ -93,7 +93,7 @@ namespace PNGStego {
 		CSPRNG(std::bind(CryptoPP::OS_GenerateRandomBlock, true, std::placeholders::_1, std::placeholders::_2))
 	{ }
 
-	PNGFile::PNGFile(const PNGFile& other) : pixels(), salt() {
+	PNGFile::PNGFile(const PNGFile &other) : pixels(), salt() {
 		this->pixels                 = other.pixels;
 		this->salt                   = other.salt;
 		this->iv                     = other.iv;
@@ -115,13 +115,13 @@ namespace PNGStego {
 			other.swap(*this);
 	}
 
-	PNGFile::PNGFile(const std::string& filename) : outputFn(),
+	PNGFile::PNGFile(const std::string &filename) : outputFn(),
 		CSPRNG(std::bind(CryptoPP::OS_GenerateRandomBlock, true, std::placeholders::_1, std::placeholders::_2))
 	{
 		this->load(filename);
 	}
 
-	PNGFile::PNGFile(std::istream& stream) : outputFn(),
+	PNGFile::PNGFile(std::istream &stream) : outputFn(),
 		CSPRNG(std::bind(CryptoPP::OS_GenerateRandomBlock, true, std::placeholders::_1, std::placeholders::_2))
 	{
 		this->load(stream);
@@ -145,21 +145,21 @@ namespace PNGStego {
 		std::swap(this->CSPRNG,                 other.CSPRNG);
 	}
 
-	PNGFile& PNGFile::operator=(const PNGFile& other) {
+	PNGFile& PNGFile::operator=(const PNGFile &other) {
 		if (this != &other) {
 			PNGFile(other).swap(*this);
 		}
 		return *this;
 	}
 
-	PNGFile& PNGFile::operator=(PNGFile&& other) {
+	PNGFile& PNGFile::operator=(PNGFile &&other) {
 		if (this != &other) {
 			other.swap(*this);
 		}
 		return *this;
 	}
 
-	PNGFile& PNGFile::operator=(const std::string& container) {
+	PNGFile& PNGFile::operator=(const std::string &container) {
 		this->load(container);
 		return *this;
 	}
@@ -176,7 +176,7 @@ namespace PNGStego {
 		return this->pixels;
 	}
 
-	void PNGFile::load(const std::string& filename) {
+	void PNGFile::load(const std::string &filename) {
 		boost::nowide::ifstream File(filename.c_str(), std::ifstream::in | std::ifstream::binary);
 		if (!File) {
 			throw std::invalid_argument("Cannot open " + filename);
@@ -184,7 +184,7 @@ namespace PNGStego {
 		this->load(File);
 	}
 
-	void PNGFile::save(const std::string& filename) {
+	void PNGFile::save(const std::string &filename) {
 		boost::nowide::ofstream File(filename.c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
 		if (!File) {
 			throw std::invalid_argument("Cannot open " + filename);
@@ -192,7 +192,7 @@ namespace PNGStego {
 		this->save(File);
 	}
 
-	void PNGFile::load(std::istream& stream) {
+	void PNGFile::load(std::istream &stream) {
 		const int signatureLength = 8;
 		uint8_t header[signatureLength];
 
@@ -325,7 +325,7 @@ namespace PNGStego {
 		this->ReadSalt();		
 	}
 
-	void PNGFile::save(std::ostream& stream) {
+	void PNGFile::save(std::ostream &stream) {
 		if (pixels.empty()) {
 			throw std::runtime_error("Trying to save an empty PNG");
 		}
@@ -406,7 +406,7 @@ namespace PNGStego {
 		       (capacity / 8) - (SIZE_BYTES + EXTENSION_BYTES) : 0U;
 	}
 
-	void PNGFile::encode(const std::string& filename, const std::string& key) {
+	void PNGFile::encode(const std::string &filename, const std::string &key) {
 		boost::nowide::ifstream File(filename.c_str(), std::ios::in | std::ios::binary);
 		if (!File) {
 			throw std::invalid_argument("Cannot open " + filename);
@@ -419,7 +419,7 @@ namespace PNGStego {
 		this->encode(binaryData, extension, key);
 	}
 
-	void PNGFile::encode(const std::vector<uint8_t> &data, const std::string& extension, const std::string& key) {
+	void PNGFile::encode(const std::vector<uint8_t> &data, const std::string &extension, const std::string &key) {
 		if (pixels.empty()) {
 			throw std::runtime_error("Trying to encode data into an empty PNG");
 		}
@@ -502,7 +502,7 @@ namespace PNGStego {
 		}
 	}
 
-	void PNGFile::decode(std::string filename, const std::string& key, std::vector<uint8_t> *backup) const {
+	void PNGFile::decode(std::string filename, const std::string &key, std::vector<uint8_t> *backup) const {
 		std::vector<uint8_t> binaryData;
 		std::string extension;
 		this->decode(binaryData, extension, key);
@@ -523,7 +523,7 @@ namespace PNGStego {
 		PNGStego::zeroMemory(binaryData.data(), binaryData.capacity());
 	}
 
-	void PNGFile::decode(std::vector<uint8_t> &data, std::string& extension, const std::string& key) const {
+	void PNGFile::decode(std::vector<uint8_t> &data, std::string &extension, const std::string &key) const {
 		if (pixels.empty()) {
 			throw std::runtime_error("Trying to extract data from an empty PNG");
 		}
@@ -592,19 +592,19 @@ namespace PNGStego {
 		}
 	}
 
-	void PNGFile::setOutputFn(const std::function<void(const std::string&)>& fn) {
+	void PNGFile::setOutputFn(const std::function<void(const std::string&)> &fn) {
 		outputFn = fn;
 	}
 
-	void PNGFile::setOutputFn(std::function<void(const std::string&)>&& fn) {
+	void PNGFile::setOutputFn(std::function<void(const std::string&)> &&fn) {
 		outputFn = fn;
 	}
 
-	void PNGFile::setCSPRNG(const std::function<void(uint8_t *, size_t)>& fn) {
+	void PNGFile::setCSPRNG(const std::function<void(uint8_t *, size_t)> &fn) {
 		CSPRNG = fn;
 	}
 
-	void PNGFile::setCSPRNG(std::function<void(uint8_t *, size_t)>&& fn) {
+	void PNGFile::setCSPRNG(std::function<void(uint8_t *, size_t)> &&fn) {
 		CSPRNG = fn;
 	}
 

@@ -36,7 +36,7 @@ namespace PNGStego {
 		return filename.substr(insertpos);
 	}
 
-	std::string addToFilename(std::string filename, const std::string& addition) {
+	std::string addToFilename(std::string filename, const std::string &addition) {
 		size_t insertpos = filename.size();
 		if (insertpos == 0)
 			throw std::invalid_argument("Empty string used as a function parameter");

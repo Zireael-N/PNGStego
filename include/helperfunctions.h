@@ -31,7 +31,7 @@ namespace PNGStego {
  ** Adds 'addition' to 'filename', before the file extension if it exists
  ** Returns result
  **/
-std::string addToFilename(std::string filename, const std::string& addition);
+std::string addToFilename(std::string filename, const std::string &addition);
 
 /** Returns extension of a file, without the leading dot */
 std::string getExtension(const std::string &filename);
