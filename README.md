@@ -63,7 +63,6 @@ PNGStego.exe cats.png passwords.txt el!tepa55word
 PNGDeStego.exe "cats (copy).png" mylovelyhiddenfile el!tepa55word --silent
 ```
 
-Note that the program stores the file's extension in the container but it doesn't store its full name, so when you extract the data, you don't have to type the extension.
 `--silent` key turns off any output, unless there's an error that didn't let the program do its job.
 
 ### OS X
@@ -88,7 +87,6 @@ $ ./PNGStego cats.png passwords.txt el!tepa55word
 $ ./PNGDestego "cats (copy).png" mylovelyhiddenfile el!tepa55word --silent
 ```
 
-Note that the program stores the file's extension in the container but it doesn't store its full name, so when you extract the data, you don't have to type the extension.
 `--silent` key turns off any output, unless there's an error that didn't let the program do its job.
 
 ### Linux
@@ -107,7 +105,6 @@ $ ./pngstego cats.png passwords.txt el!tepa55word
 $ ./pngdestego "cats (copy).png" mylovelyhiddenfile el!tepa55word --silent
 ```
 
-Note that the program stores the file's extension in the container but it doesn't store its full name, so when you extract the data, you don't have to type the extension.
 `--silent` key turns off any output, unless there's an error that didn't let the program do its job.
 
 It doesn't support pipelines because I honestly do not know how one should go about that when the program needs two files for embedding the data.
@@ -122,6 +119,54 @@ Partly because I wanted drag&drop to work on Windows, partly because I'm lazy, I
 
 Go to [releases](https://github.com/Zireael-N/PNGStego/releases) and download one of the builds.
 Usually, you'd want the one built with MSVC, but if you have an outdated Windows and/or you can't get it to launch, you'll need the one built with MinGW.
+
+#### File integrity verification
+
+Starting with 1.0.2, files containing SHA1 + SHA256 hashes signed with a GPG key will be available for downloading.
+
+You can calculate SHA1 hashes with [MS FCIV](http://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=11533).
+
+To verify that you've downloaded binaries compiled by the repository's owner, you'll need [GnuPG](https://en.wikipedia.org/wiki/Gpg4win) and this key:
+
+```
+gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys C32F513D
+gpg --fingerprint C32F513D
+```
+
+If the output of the 2nd command is:
+
+```
+pub   4096R/C32F513D 2015-10-23 [expires: 2018-10-22]
+      Key fingerprint = 3242 2012 8FF2 6EB9 FCB4  69D6 11D2 951F C32F 513D
+uid                  Zireael <zireael.nk@gmail.com>
+sub   4096R/EABFE0D4 2015-10-23 [expires: 2018-10-22]
+```
+
+Then everything's alright. To verify that sha1sum.asc / sha256sum.asc is signed using this key, execute:
+
+`gpg --verify sha256sum.asc`
+
+The output should be like this:
+
+``` 
+gpg: Signature made Fri 23 Oct 2015 23:25:09 CET using RSA key ID C32F513D
+gpg: Good signature from "Zireael <zireael.nk@gmail.com>"
+```
+
+What you're looking for is "Good signature" and a proper key ID. If it's fine, you can compare hashes of the .zip file you've downloaded and the one in sha1sum.asc / sha256sum.asc (those are text files, but I recommend opening them with something else other than default notepad.exe, since it doesn't understand line endings used in Unix. [Notepad++](https://notepad-plus-plus.org/) works fine)
+
+To calculate SHA1 with FCIV, you need to execute this within cmd.exe:
+
+`fciv.exe -add "C:\Path\To\Archive.zip" -sha1`
+
+If you have sha1sum / sha256sum from [coreutils](https://en.wikipedia.org/wiki/GNU_Core_Utilities), you can simply execute:
+
+```
+sha1sum -c sha1sum.asc
+sha256sum -c sha256sum.asc
+```
+
+It'll calculate hashes of files mentioned in sha1sum.asc / sha256sum.asc and compare them.
 
 ### Anything else
 You'll need to build it yourself.
