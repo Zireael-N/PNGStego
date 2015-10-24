@@ -89,6 +89,8 @@ $ ./PNGDestego "cats (copy).png" mylovelyhiddenfile el!tepa55word --silent
 
 `--silent` key turns off any output, unless there's an error that didn't let the program do its job.
 
+Please note that most shells record commands used by default, so it's better to either avoid invoking the program with a 3rd parameter or turn off shell history before doing so / erase shell history after doing so.
+
 ### Linux
 
 I believe you guys don't need help figuring things out.
@@ -106,6 +108,8 @@ $ ./pngdestego "cats (copy).png" mylovelyhiddenfile el!tepa55word --silent
 ```
 
 `--silent` key turns off any output, unless there's an error that didn't let the program do its job.
+
+Please note that most shells record commands used by default, so it's better to either avoid invoking the program with a 3rd parameter or turn off shell history before doing so / erase shell history after doing so.
 
 It doesn't support pipelines because I honestly do not know how one should go about that when the program needs two files for embedding the data.
 Though `load()` and `save()` are already capable of working with `std::istream` and `std::ostream`. `encode()` and `decode()` would require modifications though.
