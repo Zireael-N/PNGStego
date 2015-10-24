@@ -39,7 +39,14 @@ namespace boost {
 
 int main(int argc, char **argv) {
 #ifdef _WIN32
+	// Convert args to UTF8
 	boost::nowide::args argsConverter(argc, argv);
+
+	// Check whether the program's been launched from explorer
+	HWND consoleHandle = GetConsoleWindow();
+	DWORD processID;
+	GetWindowThreadProcessId(consoleHandle, &processID);
+	bool ownsConsole = GetCurrentProcessId() == processID;
 #endif
 	
 	std::setlocale(LC_ALL, "");
@@ -103,16 +110,21 @@ int main(int argc, char **argv) {
 	catch (const std::exception &e) {
 		boost::nowide::cerr << "Fatal error: " << e.what() << std::endl;
 		PNGStego::zeroMemory(&key[0], key.size());
-#if defined(_WIN32)
-		system("pause");
+#ifdef _WIN32
+		if (ownsConsole) {
+			boost::nowide::cerr << "Press enter to terminate the program" << std::endl;
+			boost::nowide::cin.get();
+		}
 #endif
 		return 1;
 	}
 	PNGStego::zeroMemory(&key[0], key.size());
 
-#if defined(_WIN32)
-	if (!silentMode)
-		system("pause");
+#ifdef _WIN32
+	if (!silentMode && ownsConsole) {
+		boost::nowide::cerr << "Press enter to terminate the program" << std::endl;
+		boost::nowide::cin.get();
+	}
 #endif
 	return 0;
 }
