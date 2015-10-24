@@ -126,10 +126,6 @@ Usually, you'd want the one built with MSVC, but if you have an outdated Windows
 
 #### File integrity verification
 
-Starting with 1.0.2, files containing SHA1 + SHA256 hashes signed with a GPG key will be available for downloading.
-
-You can calculate SHA1 hashes with [MS FCIV](http://www.microsoft.com/en-us/download/details.aspx?displaylang=en&id=11533).
-
 To verify that you've downloaded binaries compiled by the repository's owner, you'll need [GnuPG](https://en.wikipedia.org/wiki/Gpg4win) and this key:
 
 ```
@@ -146,31 +142,11 @@ uid                  Zireael <zireael.nk@gmail.com>
 sub   4096R/EABFE0D4 2015-10-23 [expires: 2018-10-22]
 ```
 
-Then everything's alright. To verify that sha1sum.asc / sha256sum.asc is signed using this key, execute:
+Then everything's alright. To verify that you've downloaded a ZIP-archive that is signed using this key, you can either right click on .asc file, choose "More GpgEX Options -> Verify" or execute this command:
 
-`gpg --verify sha256sum.asc`
+`gpg --verify <FILENAME>.asc`
 
-The output should be like this:
-
-``` 
-gpg: Signature made Fri 23 Oct 2015 23:25:09 CET using RSA key ID C32F513D
-gpg: Good signature from "Zireael <zireael.nk@gmail.com>"
-```
-
-What you're looking for is "Good signature" and a proper key ID. If it's fine, you can compare hashes of the .zip file you've downloaded and the one in sha1sum.asc / sha256sum.asc (those are text files, but I recommend opening them with something else other than default notepad.exe, since it doesn't understand line endings used in Unix. [Notepad++](https://notepad-plus-plus.org/) works fine)
-
-To calculate SHA1 with FCIV, you need to execute this within cmd.exe:
-
-`fciv.exe -add "C:\Path\To\Archive.zip" -sha1`
-
-If you have sha1sum / sha256sum from [coreutils](https://en.wikipedia.org/wiki/GNU_Core_Utilities), you can simply execute:
-
-```
-sha1sum -c sha1sum.asc
-sha256sum -c sha256sum.asc
-```
-
-It'll calculate hashes of files mentioned in sha1sum.asc / sha256sum.asc and compare them.
+The output should say whether the signature is valid and what key's been used to create this signature.
 
 ### Anything else
 You'll need to build it yourself.
