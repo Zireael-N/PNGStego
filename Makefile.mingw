@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = --std=c++11 -O3 -Wall -Wextra
+CXXFLAGS = --std=c++11 -O3 -DNDEBUG -Wall -Wextra
 LIBS = -lboost_nowide-mgw52-mt-1_59 -lboost_iostreams-mgw52-mt-1_59 -lbz2 -lpng -lz -lcryptopp -static-libstdc++ -static-libgcc -static -lpthread
 SOURCES = pngwrapper.cpp helperfunctions.cpp bz2compression.cpp byteencryption.cpp
 OBJECTS = $(SOURCES:.cpp=.o)

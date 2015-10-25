@@ -233,7 +233,7 @@ You'll need to edit Makefile. Add `-isystem /usr/local/include` to `CXXFLAGS`. A
 These two parameters should look like this afterwards:
 
 ```
-CXXFLAGS = --std=c++11 -O3 -Wall -Wextra -isystem /usr/local/include
+CXXFLAGS = --std=c++11 -O3 -DNDEBUG -Wall -Wextra -isystem /usr/local/include
 LIBS = -L/usr/local/lib -lboost_iostreams -lbz2 -lcryptopp -lpthread -lpng -lz
 ```
 
