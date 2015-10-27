@@ -506,8 +506,9 @@ namespace PNGStego {
 		std::vector<uint8_t> binaryData;
 		std::string extension;
 		this->decode(binaryData, extension, key);
-		extension = std::string(".") + extension;
-		if (!PNGStego::endsWith(filename, extension))
+		if (!extension.empty())
+			extension = std::string(".") + extension;
+		if (!PNGStego::endsWith(filename, extension) && !extension.empty())
 			filename += extension;
 		boost::nowide::ofstream File(filename.c_str(), std::ios::out | std::ios::binary | std::ios::trunc);
 		if (!File) {
