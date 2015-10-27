@@ -178,12 +178,12 @@ Then link against the libs mentioned above.
 
 #### MinGW
 
-Open Makefile.mingw with a text editor.
+Open Makefile with a text editor.
 Change `-lboost_nowide-mgw52-mt-1_59 -lboost_iostreams-mgw52-mt-1_59` if needed.
 Then open a cmd.exe and run the following command:
 
 ```
-mingw32-make -f Makefile.mingw
+mingw32-make
 ```
 
 ### OS X
@@ -228,16 +228,7 @@ To change where Xcode will create binaries. Now you can build the project.
 
 You'll still need to have a compiler obviously. Either install Xcode's command line tools or get yourself gcc from Homebrew.
 
-You'll need to edit Makefile. Add `-isystem /usr/local/include` to `CXXFLAGS`. Add `-L/usr/local/lib` to `LIBS`. Your headers and libraries should be symlinked there, as of now, Homebrew does this automatically.
-
-These two parameters should look like this afterwards:
-
-```
-CXXFLAGS = --std=c++11 -O3 -DNDEBUG -Wall -Wextra -isystem /usr/local/include
-LIBS = -L/usr/local/lib -lboost_iostreams -lbz2 -lcryptopp -lpthread -lpng -lz
-```
-
-Once you're done with editing Makefile, execute this in your terminal to build binaries: 
+Execute this in your terminal to build binaries: 
 
 ```bash
 $ make

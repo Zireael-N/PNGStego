@@ -1,39 +1,93 @@
-CXX = g++
+CXX ?= g++
 CXXFLAGS = --std=c++11 -O3 -DNDEBUG -Wall -Wextra
-LIBS = -lboost_iostreams -lbz2 -lcryptopp -lpthread -lpng -lz
-SOURCES = pngwrapper.cpp helperfunctions.cpp bz2compression.cpp byteencryption.cpp
-OBJECTS = $(SOURCES:.cpp=.o)
+LIBS = -lpng -lz
+LDFLAGS =
+RM = rm -f
+DEVNULL = /dev/null
+VERSIONRES =
+MKDIR = mkdir -p
 
-SRCDIR = ./src/
-HEADERS = ./include/
+SRCDIR = src/
+HEADERS = include/
 
-TESTSDIR = ./tests/
+TEMPDIR = temp/
+DEPENDS = $(TEMPDIR).depend
 
-ENCODER = pngstego
-DECODER = pngdestego
+CXXFLAGS += -I"$(HEADERS)"
+
+SRCS = $(wildcard $(SRCDIR)*.cpp)
+OBJS = $(addprefix $(TEMPDIR), $(filter-out main-stego.o main-destego.o, $(notdir $(SRCS:.cpp=.o))))
+
+ENCODER = PNGStego
+DECODER = PNGDeStego
+
+ifeq ($(OS),Windows_NT)
+	# Check if your boost libraries have the same name
+	LIBS += -lboost_nowide-mgw52-mt-1_59 -lboost_iostreams-mgw52-mt-1_59 -lbz2
+	LIBS += -static-libstdc++ -static-libgcc
+	# You might need to replace -lpthread with
+	# -lws2_32, depends on what MinGW you have
+	LIBS += -lcryptopp -static -lpthread
+	ENCODER := $(ENCODER).exe
+	DECODER := $(DECODER).exe
+	TESTS = $(TESTSRCS:.cpp=.exe)
+	RM = DEL /F /Q
+	MKDIR = mkdir
+	DEVNULL = NUL
+	VERSIONRES = $(TEMPDIR)version.res
+else
+	LIBS += -lboost_iostreams -lbz2
+	LIBS += -lcryptopp -lpthread
+	UNAME := $(shell uname -s)
+	ifneq ($(UNAME),Darwin)
+		# convert to lowercase
+		ENCODER := $(shell echo $(ENCODER) | tr A-Z a-z)
+		DECODER := $(shell echo $(DECODER) | tr A-Z a-z)
+	else
+		DECODER := $(subst S,s,$(DECODER))
+	endif
+	ifneq ($(UNAME),Linux)
+		# OS X's compiler doesn't check these directories by default
+		LDFLAGS = -L"/usr/local/lib"
+		CXXFLAGS += -isystem "/usr/local/include"
+    endif
+endif
 
 default: all
 
+# find dependencies automatically
+$(DEPENDS): $(SRCS)
+ifeq ($(OS),Windows_NT)
+	@if not exist $(TEMPDIR) $(MKDIR) $(subst /,,$(TEMPDIR))
+	@-$(RM) $(subst /,\,$(DEPENDS)) 2>$(DEVNULL)
+	$(CXX) $(CXXFLAGS) -MM $^ >> $(subst /,\,$(DEPENDS))
+else
+	@$(MKDIR) $(subst /,,$(TEMPDIR))
+	@-$(RM) $(DEPENDS) 2>$(DEVNULL)
+	$(CXX) $(CXXFLAGS) -MM $^ >> $(DEPENDS)
+endif
+
+-include $(DEPENDS)
+# ^ this include automatically invokes $(DEPENDS) :(
+
 all: $(ENCODER) $(DECODER)
 
-$(ENCODER): $(OBJECTS) $(SRCDIR)main-stego.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h $(HEADERS)pngstegoversion.h
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $@ $(SRCDIR)main-stego.cpp $(OBJECTS) $(LIBS)
+$(ENCODER): $(OBJS) $(VERSIONRES)
+	$(CXX) $(CXXFLAGS) -o $@ $(SRCDIR)main-stego.cpp $^ $(LDFLAGS) $(LIBS)
 
-$(DECODER): $(OBJECTS) $(SRCDIR)main-destego.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h $(HEADERS)pngstegoversion.h
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $@ $(SRCDIR)main-destego.cpp $(OBJECTS) $(LIBS)
+$(DECODER): $(OBJS) $(VERSIONRES)
+	$(CXX) $(CXXFLAGS) -o $@ $(SRCDIR)main-destego.cpp $^ $(LDFLAGS) $(LIBS)
 
-pngwrapper.o: $(SRCDIR)pngwrapper.cpp $(HEADERS)bz2compression.h $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h $(HEADERS)pngwrapper.h $(HEADERS)pngstegoversion.h
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -c $(SRCDIR)pngwrapper.cpp
+$(TEMPDIR)%.o: $(SRCDIR)%.cpp $(DEPENDS)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-helperfunctions.o: $(SRCDIR)helperfunctions.cpp $(HEADERS)helperfunctions.h
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -c $(SRCDIR)helperfunctions.cpp
+ifeq ($(OS),Windows_NT)
+$(VERSIONRES): ./msvc/version.rc
+	windres ./msvc/version.rc -O coff -o $@
+endif
 
-bz2compression.o: $(SRCDIR)bz2compression.cpp $(HEADERS)bz2compression.h
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -c $(SRCDIR)bz2compression.cpp
-
-byteencryption.o: $(SRCDIR)byteencryption.cpp $(HEADERS)byteencryption.h $(HEADERS)helperfunctions.h
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -c $(SRCDIR)byteencryption.cpp
-
+# do not invoke these on Windows
+ifneq ($(OS),Windows_NT)
 install: $(ENCODER) $(DECODER)
 	cp $(ENCODER) /usr/bin/$(ENCODER)
 	cp $(DECODER) /usr/bin/$(DECODER)
@@ -41,34 +95,70 @@ install: $(ENCODER) $(DECODER)
 uninstall:
 	if [ -a /usr/bin/$(ENCODER) ] ; \
 	then \
-		rm /usr/bin/$(ENCODER) ; \
+		$(RM) /usr/bin/$(ENCODER) ; \
 	fi;
 	if [ -a /usr/bin/$(DECODER) ] ; \
 	then \
-		rm /usr/bin/$(DECODER) ; \
+		$(RM) /usr/bin/$(DECODER) ; \
 	fi;
+endif
 
 .PHONY: clean
+
+# convert forward slashes
+# to backslashes if needed
 clean:
-	rm -f $(OBJECTS) $(ENCODER) $(DECODER)
+ifeq ($(OS),Windows_NT)
+	$(RM) $(subst /,\,$(OBJS) $(ENCODER) $(DECODER) $(DEPENDS) $(VERSIONRES))
+else
+	$(RM) $(OBJS) $(ENCODER) $(DECODER) $(DEPENDS) $(VERSIONRES)
+endif
 
+
+TESTSDIR = tests/
+TESTSRCS = $(wildcard $(TESTSDIR)*.cpp)
+TESTS = $(TESTSRCS:.cpp=.exe)
+TESTDEPS = $(addprefix $(TEMPDIR), $(notdir $(TESTSRCS:.cpp=.d)))
+
+# tests are not for distribution
+# no reason to statically link on any OS
+ifeq ($(OS),Windows_NT)
+	TLIBS = $(filter-out -static -static-libstdc++ -static-libgcc, $(LIBS))
+else
+	TLIBS = $(LIBS)
+endif
+
+# convert forward slashes
+# to backslashes if needed
 clean-test:
-	rm -f $(TESTSDIR)test-byteencryption $(TESTSDIR)test-helperfunctions $(TESTSDIR)test-bz2compression $(TESTSDIR)test-steganography
+ifeq ($(OS),Windows_NT)
+	$(RM) $(subst /,\,$(TESTS) $(TESTDEPS))
+else
+	$(RM) $(TESTS) $(TESTDEPS)
+endif
 
-test: $(TESTSDIR)test-helperfunctions $(TESTSDIR)test-bz2compression $(TESTSDIR)test-byteencryption $(TESTSDIR)test-steganography
-	$(TESTSDIR)test-helperfunctions
-	$(TESTSDIR)test-bz2compression
-	$(TESTSDIR)test-byteencryption
-	$(TESTSDIR)test-steganography
+-include $(TESTDEPS)
 
-$(TESTSDIR)test-helperfunctions: $(TESTSDIR)test-helperfunctions.cpp $(HEADERS)helperfunctions.h helperfunctions.o
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-helperfunctions $(TESTSDIR)test-helperfunctions.cpp helperfunctions.o $(LIBS)
+# for tests that are linked with objects
+# with the same name, but without "test-"
+$(TESTSDIR)%.exe: $(TESTSDIR)%.cpp $(OBJS)
+	$(CXX) $(CXXFLAGS) -MM -MT $@ -MF $(TEMPDIR)$(notdir $(@:.exe=.d)) $<
+	$(CXX) $(CXXFLAGS) -o $@ $< $(TEMPDIR)$(notdir $(subst test-,,$(subst exe,o,$@))) $(LDFLAGS) $(TLIBS)
 
-$(TESTSDIR)test-bz2compression: $(TESTSDIR)test-bz2compression.cpp $(TESTSDIR)test-bz2compression.h $(HEADERS)bz2compression.h bz2compression.o
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-bz2compression $(TESTSDIR)test-bz2compression.cpp bz2compression.o $(LIBS)
+# this one also needs to be linked
+# with helperfunctions.o
+$(TESTSDIR)test-byteencryption.exe: $(TESTSDIR)test-byteencryption.cpp $(OBJS)
+	$(CXX) $(CXXFLAGS) -MM -MT $@ -MF $(TEMPDIR)$(notdir $(@:.exe=.d)) $<
+	$(CXX) $(CXXFLAGS) -o $@ $< $(TEMPDIR)byteencryption.o $(TEMPDIR)helperfunctions.o $(LDFLAGS) $(TLIBS)
 
-$(TESTSDIR)test-byteencryption: $(TESTSDIR)test-byteencryption.cpp $(TESTSDIR)test-byteencryption.h $(HEADERS)byteencryption.h byteencryption.o helperfunctions.o
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-byteencryption $(TESTSDIR)test-byteencryption.cpp byteencryption.o helperfunctions.o $(LIBS)
+# this one needs to be
+# linked with everything
+$(TESTSDIR)test-steganography.exe: $(TESTSDIR)test-steganography.cpp $(OBJS)
+	$(CXX) $(CXXFLAGS) -MM -MT $@ -MF $(TEMPDIR)$(notdir $(@:.exe=.d)) $<
+	$(CXX) $(CXXFLAGS) -o $@ $< $(OBJS) $(LDFLAGS) $(TLIBS)
 
-$(TESTSDIR)test-steganography: $(TESTSDIR)test-steganography.cpp $(TESTSDIR)test-steganography.h $(HEADERS)pngwrapper.h $(OBJECTS)
-	$(CXX) $(CXXFLAGS) -I$(HEADERS) -o $(TESTSDIR)test-steganography $(TESTSDIR)test-steganography.cpp $(OBJECTS) $(LIBS)
+test: $(TESTS)
+	$(TESTSDIR)test-helperfunctions.exe
+	$(TESTSDIR)test-bz2compression.exe
+	$(TESTSDIR)test-byteencryption.exe
+	$(TESTSDIR)test-steganography.exe

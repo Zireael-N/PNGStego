@@ -3,7 +3,6 @@
 !/.gitattributes
 !/.travis.yml
 !/Makefile
-!/Makefile.mingw
 !/README.md
 !/LICENSE.md
 
