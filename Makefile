@@ -21,20 +21,43 @@ OBJS = $(addprefix $(TEMPDIR), $(filter-out main-stego.o main-destego.o, $(notdi
 ENCODER = PNGStego
 DECODER = PNGDeStego
 
+ISCYGWIN = 0
+ISMINGW = 0
+ISCMDEXE = 0
+
 ifeq ($(OS),Windows_NT)
+	ENCODER := $(ENCODER).exe
+	DECODER := $(DECODER).exe
+	TESTS = $(TESTSRCS:.cpp=.exe)
+	VERSIONRES = $(TEMPDIR)version.res
+ifeq ($(PWD),)
+	# ! cmd.exe !
+	ISCMDEXE = 1
 	# Check if your boost libraries have the same name
 	LIBS += -lboost_nowide-mgw52-mt-1_59 -lboost_iostreams-mgw52-mt-1_59 -lbz2
 	LIBS += -static-libstdc++ -static-libgcc
 	# You might need to replace -lpthread with
 	# -lws2_32, depends on what MinGW you have
 	LIBS += -lcryptopp -static -lpthread
-	ENCODER := $(ENCODER).exe
-	DECODER := $(DECODER).exe
-	TESTS = $(TESTSRCS:.cpp=.exe)
 	RM = DEL /F /Q
 	MKDIR = mkdir
 	DEVNULL = NUL
-	VERSIONRES = $(TEMPDIR)version.res
+else
+	# ! MSYS2 / Cygwin shell !
+	ISCYGWIN = $(shell uname | egrep -c "CYGWIN")
+	ISMINGW = $(shell uname | egrep -c "MINGW")
+ifeq ($(ISCYGWIN),1)
+	LIBS += -lboost_iostreams -lbz2
+	LIBS += -lcryptopp -lpthread
+endif # ISCYGWIN
+ifeq ($(ISMINGW),1)
+	LIBS += -lboost_nowide-mt -lboost_iostreams-mt -lbz2
+	LIBS += -static-libstdc++ -static-libgcc
+	# You might need to replace -lpthread with
+	# -lws2_32, depends on what MinGW you have
+	LIBS += -lcryptopp -static -lpthread
+endif # ISMINGW
+endif # PWD
 else
 	LIBS += -lboost_iostreams -lbz2
 	LIBS += -lcryptopp -lpthread
@@ -57,7 +80,7 @@ default: all
 
 # find dependencies automatically
 $(DEPENDS): $(SRCS)
-ifeq ($(OS),Windows_NT)
+ifeq ($(ISCMDEXE),1)
 	@if not exist $(TEMPDIR) $(MKDIR) $(subst /,,$(TEMPDIR))
 	@-$(RM) $(subst /,\,$(DEPENDS)) 2>$(DEVNULL)
 	$(CXX) $(CXXFLAGS) -MM $^ >> $(subst /,\,$(DEPENDS))
@@ -87,7 +110,7 @@ $(VERSIONRES): ./msvc/version.rc
 endif
 
 # do not invoke these on Windows
-ifneq ($(OS),Windows_NT)
+ifneq ($(ISCMDEXE),1)
 install: $(ENCODER) $(DECODER)
 	cp $(ENCODER) /usr/bin/$(ENCODER)
 	cp $(DECODER) /usr/bin/$(DECODER)
@@ -108,7 +131,7 @@ endif
 # convert forward slashes
 # to backslashes if needed
 clean:
-ifeq ($(OS),Windows_NT)
+ifeq ($(ISCMDEXE),1)
 	$(RM) $(subst /,\,$(OBJS) $(ENCODER) $(DECODER) $(DEPENDS) $(VERSIONRES))
 else
 	$(RM) $(OBJS) $(ENCODER) $(DECODER) $(DEPENDS) $(VERSIONRES)
@@ -122,16 +145,12 @@ TESTDEPS = $(addprefix $(TEMPDIR), $(notdir $(TESTSRCS:.cpp=.d)))
 
 # tests are not for distribution
 # no reason to statically link on any OS
-ifeq ($(OS),Windows_NT)
-	TLIBS = $(filter-out -static -static-libstdc++ -static-libgcc, $(LIBS))
-else
-	TLIBS = $(LIBS)
-endif
+TLIBS = $(filter-out -static -static-libstdc++ -static-libgcc, $(LIBS))
 
 # convert forward slashes
 # to backslashes if needed
 clean-test:
-ifeq ($(OS),Windows_NT)
+ifeq ($(ISCMDEXE),1)
 	$(RM) $(subst /,\,$(TESTS) $(TESTDEPS))
 else
 	$(RM) $(TESTS) $(TESTDEPS)
