@@ -5,6 +5,7 @@
 !/Makefile
 !/README.md
 !/LICENSE.md
+!/icon.png
 
 !/src/
 /src/*
@@ -27,8 +28,11 @@
 !/msvc/PNGStego.sln
 !/msvc/PNGStego.vcxproj
 !/msvc/PNGDeStego.vcxproj
-# ... and a resource file
+# ... and resources
 !/msvc/version.rc
+!/msvc/Win32-Manifest.manifest
+!/msvc/icon.ico
+
 
 # Same for Xcode
 !/xcode/

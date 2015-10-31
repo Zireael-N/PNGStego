@@ -89,19 +89,23 @@
     <IntDir>$(SolutionDir)temp\$(Configuration)\DeStego\$(Platform)\</IntDir>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <TargetName>$(ProjectName)64</TargetName>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IntDir>$(SolutionDir)temp\$(Configuration)\DeStego\$(Platform)\</IntDir>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
     <TargetName>$(ProjectName)64</TargetName>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IntDir>$(SolutionDir)temp\$(Configuration)\DeStego\$(Platform)\</IntDir>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>$(SolutionDir)temp\$(Configuration)\DeStego\$(Platform)\</IntDir>
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\</OutDir>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
