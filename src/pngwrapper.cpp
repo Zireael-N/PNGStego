@@ -22,11 +22,10 @@
 #endif
 /*
   Access to:
-  /dev/random & /dev/urandom on Linux
-  /dev/srandom & /dev/urandom on BSD
-  CryptGenRandom() on Windows
-  For OS X it's probably the same as for BSD, it's not mentioned
-                                              on Crypto++'s Wiki.
+  /dev/random & /dev/urandom on Linux;
+  /dev/srandom & /dev/urandom on BSD;
+  CryptGenRandom() on Windows;
+  On OS X /dev/random and /dev/urandom is the same thing.
 
   Used for generating IV and Salt.
 */
