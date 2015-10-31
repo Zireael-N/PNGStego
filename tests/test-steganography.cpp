@@ -75,14 +75,8 @@ bool testEncode() {
 	container = original;
 
 	// Instead of using a PRNG fill IV and Salt with predefined values
-	// This silly define is for Travis CI and its ancient version of Clang
-#if defined(__apple_build_version__) && __apple_build_version__ < 7000000
-	container.setCSPRNG([](uint8_t *data, size_t size) {
-		memset(data, 0x7F, size);
-	});
-#else
-	container.setCSPRNG(std::bind(memset, std::placeholders::_1, 0x7F, std::placeholders::_2));
-#endif
+	container.setCSPRNG(std::bind(memset, std::placeholders::_1,
+	                                0x7F, std::placeholders::_2));
 	container.encode(encodedData, encodedExtension, password);
 
 	return container.getPixels() == precalculatedContainer.getPixels() &&
