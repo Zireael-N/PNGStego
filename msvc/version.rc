@@ -28,6 +28,7 @@ BEGIN
         BEGIN
             VALUE "LegalCopyright", "Copyright (C) 2015 Zireael"
             VALUE "ProductName", "PNGStego"
+            VALUE "FileDescription", "PNGStego"
             VALUE "ProductVersion", __PNGSTEGO_VER_STRING
         END
     END
