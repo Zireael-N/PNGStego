@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		014BE8F01BCB010E00C3DA70 /* byteencryption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EB1BCB010E00C3DA70 /* byteencryption.cpp */; settings = {ASSET_TAGS = (); }; };
-		014BE8F11BCB010E00C3DA70 /* bz2compression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EC1BCB010E00C3DA70 /* bz2compression.cpp */; settings = {ASSET_TAGS = (); }; };
-		014BE8F21BCB010E00C3DA70 /* helperfunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8ED1BCB010E00C3DA70 /* helperfunctions.cpp */; settings = {ASSET_TAGS = (); }; };
-		014BE8F31BCB010E00C3DA70 /* main-stego.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EE1BCB010E00C3DA70 /* main-stego.cpp */; settings = {ASSET_TAGS = (); }; };
-		014BE8F41BCB010E00C3DA70 /* pngwrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EF1BCB010E00C3DA70 /* pngwrapper.cpp */; settings = {ASSET_TAGS = (); }; };
-		018525C11BCB056F003484E8 /* main-destego.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 018525BF1BCB0566003484E8 /* main-destego.cpp */; settings = {ASSET_TAGS = (); }; };
-		018525C21BCB0577003484E8 /* byteencryption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EB1BCB010E00C3DA70 /* byteencryption.cpp */; settings = {ASSET_TAGS = (); }; };
-		018525C31BCB0577003484E8 /* bz2compression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EC1BCB010E00C3DA70 /* bz2compression.cpp */; settings = {ASSET_TAGS = (); }; };
-		018525C41BCB0577003484E8 /* helperfunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8ED1BCB010E00C3DA70 /* helperfunctions.cpp */; settings = {ASSET_TAGS = (); }; };
-		018525C51BCB057C003484E8 /* pngwrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EF1BCB010E00C3DA70 /* pngwrapper.cpp */; settings = {ASSET_TAGS = (); }; };
+		014BE8F01BCB010E00C3DA70 /* byteencryption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EB1BCB010E00C3DA70 /* byteencryption.cpp */; };
+		014BE8F11BCB010E00C3DA70 /* bz2compression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EC1BCB010E00C3DA70 /* bz2compression.cpp */; };
+		014BE8F21BCB010E00C3DA70 /* helperfunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8ED1BCB010E00C3DA70 /* helperfunctions.cpp */; };
+		014BE8F31BCB010E00C3DA70 /* main-stego.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EE1BCB010E00C3DA70 /* main-stego.cpp */; };
+		014BE8F41BCB010E00C3DA70 /* pngwrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EF1BCB010E00C3DA70 /* pngwrapper.cpp */; };
+		018525C11BCB056F003484E8 /* main-destego.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 018525BF1BCB0566003484E8 /* main-destego.cpp */; };
+		018525C21BCB0577003484E8 /* byteencryption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EB1BCB010E00C3DA70 /* byteencryption.cpp */; };
+		018525C31BCB0577003484E8 /* bz2compression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EC1BCB010E00C3DA70 /* bz2compression.cpp */; };
+		018525C41BCB0577003484E8 /* helperfunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8ED1BCB010E00C3DA70 /* helperfunctions.cpp */; };
+		018525C51BCB057C003484E8 /* pngwrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EF1BCB010E00C3DA70 /* pngwrapper.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -51,7 +51,7 @@
 		014BE8EE1BCB010E00C3DA70 /* main-stego.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "main-stego.cpp"; path = "../src/main-stego.cpp"; sourceTree = "<group>"; };
 		014BE8EF1BCB010E00C3DA70 /* pngwrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pngwrapper.cpp; path = ../src/pngwrapper.cpp; sourceTree = "<group>"; };
 		014E95981BD773F2002FC8AF /* pngstegoversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pngstegoversion.h; path = ../include/pngstegoversion.h; sourceTree = "<group>"; };
-		018525B81BCB052E003484E8 /* PNGDestego */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PNGDestego; sourceTree = BUILT_PRODUCTS_DIR; };
+		018525B81BCB052E003484E8 /* PNGDeStego */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PNGDeStego; sourceTree = BUILT_PRODUCTS_DIR; };
 		018525BF1BCB0566003484E8 /* main-destego.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "main-destego.cpp"; path = "../src/main-destego.cpp"; sourceTree = "<group>"; };
 		01E3A8D21BCAFFB600BB393C /* PNGStego */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PNGStego; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -112,7 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				01E3A8D21BCAFFB600BB393C /* PNGStego */,
-				018525B81BCB052E003484E8 /* PNGDestego */,
+				018525B81BCB052E003484E8 /* PNGDeStego */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -120,9 +120,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		018525B71BCB052E003484E8 /* PNGDestego */ = {
+		018525B71BCB052E003484E8 /* PNGDeStego */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 018525BE1BCB052E003484E8 /* Build configuration list for PBXNativeTarget "PNGDestego" */;
+			buildConfigurationList = 018525BE1BCB052E003484E8 /* Build configuration list for PBXNativeTarget "PNGDeStego" */;
 			buildPhases = (
 				018525B41BCB052E003484E8 /* Sources */,
 				018525B51BCB052E003484E8 /* Frameworks */,
@@ -132,9 +132,9 @@
 			);
 			dependencies = (
 			);
-			name = PNGDestego;
+			name = PNGDeStego;
 			productName = PNGDestego;
-			productReference = 018525B81BCB052E003484E8 /* PNGDestego */;
+			productReference = 018525B81BCB052E003484E8 /* PNGDeStego */;
 			productType = "com.apple.product-type.tool";
 		};
 		01E3A8D11BCAFFB600BB393C /* PNGStego */ = {
@@ -184,7 +184,7 @@
 			projectRoot = "";
 			targets = (
 				01E3A8D11BCAFFB600BB393C /* PNGStego */,
-				018525B71BCB052E003484E8 /* PNGDestego */,
+				018525B71BCB052E003484E8 /* PNGDeStego */,
 			);
 		};
 /* End PBXProject section */
@@ -377,7 +377,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		018525BE1BCB052E003484E8 /* Build configuration list for PBXNativeTarget "PNGDestego" */ = {
+		018525BE1BCB052E003484E8 /* Build configuration list for PBXNativeTarget "PNGDeStego" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				018525BC1BCB052E003484E8 /* Debug */,
