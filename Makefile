@@ -66,8 +66,6 @@ else
 		# convert to lowercase
 		ENCODER := $(shell echo $(ENCODER) | tr A-Z a-z)
 		DECODER := $(shell echo $(DECODER) | tr A-Z a-z)
-	else
-		DECODER := $(subst S,s,$(DECODER))
 	endif
 	ifneq ($(UNAME),Linux)
 		# OS X's compiler doesn't check these directories by default
