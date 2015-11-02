@@ -121,9 +121,7 @@ namespace PNGStego {
 			}
 		}
 
-		if (pos == 0)
-			source.erase(source.begin(), source.end());
-
+		source.erase(source.begin(), source.end());
 		return;
 	}
 
