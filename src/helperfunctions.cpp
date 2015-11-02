@@ -68,7 +68,7 @@ namespace PNGStego {
 		if (from == std::string::npos)
 			from = 0;
 		else
-			++from;
+			from += 1;
 
 		for (size_t i = to - 1; ; --i) {
 			if (filename[i] == '.' && i > 0 && filename[i - 1] != DIRECTORYDELIM)
