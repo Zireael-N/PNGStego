@@ -59,9 +59,10 @@ namespace PNGStego {
 	}
 
 	std::string baseFilenameNoExtension(const std::string &filename) noexcept {
-		size_t to = filename.size() - 1;
+		size_t to = filename.size();
 		if (to == 0)
 			return filename;
+		to -= 1;
 
 		std::string::size_type from = filename.rfind(DIRECTORYDELIM);
 		if (from == std::string::npos)
