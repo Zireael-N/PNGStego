@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
 		            "\nDistributed under Boost Software License: http://www.boost.org/LICENSE_1_0.txt\n";
 
 	if (argc < 4) {
-		boost::nowide::cout << "Usage: " << PNGStego::shortenFilename(argv[0]) << " [path-to-container] [output-file] [key] [--silent]\n";
+		boost::nowide::cout << "Usage: " << PNGStego::baseFilename(argv[0]) << " [path-to-container] [output-file] [key] [--silent]\n";
 	}
 
 	if (!silentMode)

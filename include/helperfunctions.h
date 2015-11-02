@@ -34,22 +34,25 @@ namespace PNGStego {
 std::string addToFilename(std::string filename, const std::string &addition);
 
 /** Returns extension of a file, without the leading dot */
-std::string getExtension(const std::string &filename);
+std::string getExtension(const std::string &filename) noexcept;
 
-/** Cuts all the directories, returns result */
-std::string shortenFilename(const std::string &filename);
+/** Returns the filename without directories */
+std::string baseFilename(const std::string &filename) noexcept;
+
+/** Returns the filename without directories and extension */
+std::string baseFilenameNoExtension(const std::string &filename) noexcept;
 
 /** Returns the size of a given file */
 std::ifstream::pos_type fileSize(const std::string &filename);
 
 /** Converts std::string to std::vector<uint8_t> */
-std::vector<uint8_t> stringToVector(const std::string &source);
+std::vector<uint8_t> stringToVector(const std::string &source) noexcept;
 
 /** If the source ends with '\r' and '\n' symbols, remove them */
-void cutLineEndings(std::string &source);
+void cutLineEndings(std::string &source) noexcept;
 
 /** Returns whether str2 is the ending of the str1 */
-bool endsWith(const std::string &str1, const std::string &str2);
+bool endsWith(const std::string &str1, const std::string &str2) noexcept;
 
 /**
  ** Sets bytes at [dest; dest + size) to zeros

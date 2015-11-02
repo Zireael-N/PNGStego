@@ -22,18 +22,18 @@
 
 namespace PNGStego {
 
-	std::string getExtension(const std::string &filename) {
-		size_t insertpos = filename.size();
-		if (insertpos == 0)
-			throw std::invalid_argument("Empty string used as a function parameter");
-		for (size_t i = insertpos - 1; ; --i) {
+	std::string getExtension(const std::string &filename) noexcept {
+		size_t pos = filename.size();
+		if (pos == 0)
+			return std::string("");
+		for (size_t i = pos - 1; ; --i) {
 			if (filename[i] == '.' && i > 0 && filename[i - 1] != DIRECTORYDELIM) {
-				insertpos = i + 1;
+				pos = i + 1;
 			}
 			if (filename[i] == DIRECTORYDELIM || i == 0)
 				break;
 		}
-		return filename.substr(insertpos);
+		return filename.substr(pos);
 	}
 
 	std::string addToFilename(std::string filename, const std::string &addition) {
@@ -50,21 +50,33 @@ namespace PNGStego {
 		return filename;
 	}
 
-	std::string shortenFilename(const std::string &filename) {
-		size_t insertpos = filename.size();
-		if (insertpos == 0)
-			throw std::invalid_argument("Empty string used as a function parameter");
-		for (size_t i = insertpos - 1; ; --i) {
-			if (filename[i] == DIRECTORYDELIM) {
-				insertpos = i + 1;
+	std::string baseFilename(const std::string &filename) noexcept {
+		std::string::size_type pos = filename.rfind(DIRECTORYDELIM);
+		if (pos == std::string::npos)
+			return filename;
+
+		return filename.substr(pos + 1);
+	}
+
+	std::string baseFilenameNoExtension(const std::string &filename) noexcept {
+		size_t to = filename.size() - 1;
+		if (to == 0)
+			return filename;
+
+		std::string::size_type from = filename.rfind(DIRECTORYDELIM);
+		if (from == std::string::npos)
+			from = 0;
+		else
+			++from;
+
+		for (size_t i = to - 1; ; --i) {
+			if (filename[i] == '.' && i > 0 && filename[i - 1] != DIRECTORYDELIM)
+				to = i - 1;
+			if (filename[i] == DIRECTORYDELIM || i == 0)
 				break;
-			}
-			if (i == 0) {
-				insertpos = 0;
-				break;
-			}
 		}
-		return filename.substr(insertpos);
+
+		return filename.substr(from, to - from + 1);
 	}
 
 	std::ifstream::pos_type fileSize(const std::string &filename)
@@ -93,7 +105,7 @@ namespace PNGStego {
 #endif
 	}
 
-	void cutLineEndings(std::string &source) {
+	void cutLineEndings(std::string &source) noexcept {
 		if (source.size() == 0) // empty string
 			return;
 		size_t pos = source.size() - 1;
@@ -114,7 +126,7 @@ namespace PNGStego {
 		return;
 	}
 
-	bool endsWith(const std::string &str1, const std::string &str2) {
+	bool endsWith(const std::string &str1, const std::string &str2) noexcept {
 		if (!str2.empty() && str1.length() >= str2.length()) {
 			return (0 == str1.compare(str1.length() - str2.length(), str2.length(), str2));
 		}
@@ -123,7 +135,7 @@ namespace PNGStego {
 		}
 	}
 
-	std::vector<uint8_t> stringToVector(const std::string &source) {
+	std::vector<uint8_t> stringToVector(const std::string &source) noexcept {
 		return std::vector<uint8_t>(source.begin(), source.end());
 	}
 

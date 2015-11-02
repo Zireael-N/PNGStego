@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
 		            "\nDistributed under Boost Software License: http://www.boost.org/LICENSE_1_0.txt\n";
 
 	if (argc < 4) {
-		boost::nowide::cout << "Usage: " << PNGStego::shortenFilename(argv[0]) << " [path-to-container] [input-file] [key] [--silent]\n";
+		boost::nowide::cout << "Usage: " << PNGStego::baseFilename(argv[0]) << " [path-to-container] [input-file] [key] [--silent]\n";
 	}
 
 	if (!silentMode)
@@ -106,7 +106,7 @@ int main(int argc, char **argv) {
 		container.encode(dataFilename, key);
 		std::string newfile = PNGStego::addToFilename(containerFilename, " (copy)");
 		if (!silentMode)
-			boost::nowide::cout << "Saving the output to \"" << PNGStego::shortenFilename(newfile) << "\"..." << std::endl;
+			boost::nowide::cout << "Saving the output to \"" << PNGStego::baseFilename(newfile) << "\"..." << std::endl;
 		PNGStego::zeroMemory(&key[0], key.size());
 
 		container.save(newfile);

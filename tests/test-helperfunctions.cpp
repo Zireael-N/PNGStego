@@ -13,7 +13,8 @@
 
 bool testGetExtension();
 bool testAddToFilename();
-bool testShortenFilename();
+bool testBaseFilename();
+bool testBaseFilenameNoExtension();
 bool testCutLineEndings();
 bool testEndsWith();
 bool testStringToVector();
@@ -33,7 +34,8 @@ int main() {
 
 	TEST("Testing getExtension()...: ", testGetExtension)
 	TEST("Testing addToFilename()...: ", testAddToFilename)
-	TEST("Testing shortenFilename()...: ", testShortenFilename)
+	TEST("Testing baseFilename()...: ", testBaseFilename)
+	TEST("Testing baseFilenameNoExtension()...: ", testBaseFilenameNoExtension)
 	TEST("Testing cutLineEndings()...: ", testCutLineEndings)
 	TEST("Testing endsWith()...: ", testEndsWith)
 	TEST("Testing stringToVector()...: ", testStringToVector)
@@ -55,10 +57,12 @@ using namespace PNGStego;
 
 bool testGetExtension() {
 	const std::pair<std::string, std::string> TestsAndExpectedResults[] = {
+	                                                                        { HOMEDIR "",                 ""        },
 	                                                                        { HOMEDIR ".gitignore",       ""        },
 	                                                                        { HOMEDIR "Makefile",         ""        }, 
 	                                                                        { HOMEDIR "image.png",        "png"     }, 
 	                                                                        { HOMEDIR "backup.tar.bz2",   "tar.bz2" },
+	                                                                        {         "",                 ""        },
 	                                                                        {         ".gitignore",       ""        },
 	                                                                        {         "Makefile",         ""        }, 
 	                                                                        {         "image.png",        "png"     }, 
@@ -91,8 +95,9 @@ bool testAddToFilename() {
 	return true;
 }
 
-bool testShortenFilename() {
+bool testBaseFilename() {
 	const std::pair<std::string, std::string> TestsAndExpectedResults[] = {
+	                                                                        { HOMEDIR "",                 ""               },
 	                                                                        { HOMEDIR ".gitignore",       ".gitignore"     },
 	                                                                        { HOMEDIR "Makefile",         "Makefile"       }, 
 	                                                                        { HOMEDIR "image.png",        "image.png"      }, 
@@ -103,15 +108,40 @@ bool testShortenFilename() {
 	                                                                        {         "backup.tar.bz2",   "backup.tar.bz2" },
 	                                                                      };
 	for (auto &p : TestsAndExpectedResults) {
-		std::string temp = shortenFilename(p.first);
+		std::string temp = baseFilename(p.first);
 		if (temp != p.second)
 			return false;
 	}
 	return true;
 }
 
+bool testBaseFilenameNoExtension() {
+	const std::pair<std::string, std::string> TestsAndExpectedResults[] = {
+	                                                                        { HOMEDIR "",                 ""            },
+	                                                                        { HOMEDIR ".gitignore",       ".gitignore"  },
+	                                                                        { HOMEDIR "Makefile",         "Makefile"    }, 
+	                                                                        { HOMEDIR "image.png",        "image"       }, 
+	                                                                        { HOMEDIR "backup.tar.bz2",   "backup"      },
+	                                                                        {         "",                 ""            },
+	                                                                        {         ".gitignore",       ".gitignore"  },
+	                                                                        {         "Makefile",         "Makefile"    }, 
+	                                                                        {         "image.png",        "image"       }, 
+	                                                                        {         "backup.tar.bz2",   "backup"      },
+	                                                                      };
+	for (auto &p : TestsAndExpectedResults) {
+		std::string temp = baseFilenameNoExtension(p.first);
+		if (temp != p.second) {
+			std::cout << "Result: " << temp << "\n"
+			<< "Expected: " << p.second << std::endl;
+			return false;
+		}
+	}
+	return true;
+}
+
 bool testCutLineEndings() {
 	const std::pair<std::string, std::string> TestsAndExpectedResults[] = {
+	                                                                        { "",                 ""            },
 	                                                                        { "\r\n\r\n\r\n",     ""            },
 	                                                                        { "Message\r\n",      "Message"     }, 
 	                                                                        { "Message",          "Message"     }, 
@@ -133,6 +163,7 @@ bool testEndsWith() {
 	                                                                               std::make_tuple(HOMEDIR "image.png", ".jpg",         false),
 	                                                                               std::make_tuple(HOMEDIR "image.png", "",             false),
 	                                                                               std::make_tuple(HOMEDIR "image.png", "bigimage.png", false),
+	                                                                               std::make_tuple(        "",          ".odt",         false),
 	                                                                             };
 	for (auto &p : TestsAndExpectedResults) {
 		bool result = endsWith(std::get<0>(p), std::get<1>(p));
@@ -144,9 +175,9 @@ bool testEndsWith() {
 
 bool testStringToVector() {
 	const std::pair<std::string, std::vector<unsigned char> > TestsAndExpectedResults[] = {
+	                                                                                        std::make_pair("",           std::vector<unsigned char>({                                             }) ),
 	                                                                                        std::make_pair("message",    std::vector<unsigned char>({ 'm', 'e', 's', 's', 'a', 'g', 'e'           }) ),
 	                                                                                        std::make_pair("hey there",  std::vector<unsigned char>({ 'h', 'e', 'y', ' ', 't', 'h', 'e', 'r', 'e' }) ),
-	                                                                                        std::make_pair("",           std::vector<unsigned char>({                                             }) ),
 	                                                                                      };
 	for (auto &p : TestsAndExpectedResults) {
 		std::vector<unsigned char> temp = stringToVector(p.first);
