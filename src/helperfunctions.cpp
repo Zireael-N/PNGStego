@@ -127,7 +127,7 @@ namespace PNGStego {
 
 	bool endsWith(const std::string &str1, const std::string &str2) noexcept {
 		if (!str2.empty() && str1.length() >= str2.length()) {
-			return (0 == str1.compare(str1.length() - str2.length(), str2.length(), str2));
+			return (str1.compare(str1.length() - str2.length(), str2.length(), str2) == 0);
 		}
 		else {
 			return false;
