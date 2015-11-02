@@ -36,6 +36,20 @@ namespace PNGStego {
 		return filename.substr(pos);
 	}
 
+	std::string removeExtension(const std::string &filename) noexcept {
+		size_t pos = filename.size();
+		if (pos == 0)
+			return std::string("");
+		for (size_t i = pos - 1; ; --i) {
+			if (filename[i] == '.' && i > 0 && filename[i - 1] != DIRECTORYDELIM) {
+				pos = i;
+			}
+			if (filename[i] == DIRECTORYDELIM || i == 0)
+				break;
+		}
+		return filename.substr(0, pos);
+	}
+
 	std::string addToFilename(std::string filename, const std::string &addition) {
 		size_t insertpos = filename.size();
 		if (insertpos == 0)

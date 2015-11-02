@@ -12,6 +12,7 @@
 #include "helperfunctions.h"
 
 bool testGetExtension();
+bool testRemoveExtension();
 bool testAddToFilename();
 bool testBaseFilename();
 bool testBaseFilenameNoExtension();
@@ -33,6 +34,7 @@ int main() {
 	int successes = 0;
 
 	TEST("Testing getExtension()...: ", testGetExtension)
+	TEST("Testing removeExtension()...: ", testRemoveExtension)
 	TEST("Testing addToFilename()...: ", testAddToFilename)
 	TEST("Testing baseFilename()...: ", testBaseFilename)
 	TEST("Testing baseFilenameNoExtension()...: ", testBaseFilenameNoExtension)
@@ -70,6 +72,27 @@ bool testGetExtension() {
 	                                                                      };
 	for (auto &p : TestsAndExpectedResults) {
 		std::string temp = getExtension(p.first);
+		if (temp != p.second)
+			return false;
+	}
+	return true;
+}
+
+bool testRemoveExtension() {
+	const std::pair<std::string, std::string> TestsAndExpectedResults[] = {
+	                                                                        { HOMEDIR "",                 HOMEDIR ""           },
+	                                                                        { HOMEDIR ".gitignore",       HOMEDIR ".gitignore" },
+	                                                                        { HOMEDIR "Makefile",         HOMEDIR "Makefile"   }, 
+	                                                                        { HOMEDIR "image.png",        HOMEDIR "image"      }, 
+	                                                                        { HOMEDIR "backup.tar.bz2",   HOMEDIR "backup"     },
+	                                                                        {         "",                         ""           },
+	                                                                        {         ".gitignore",               ".gitignore" },
+	                                                                        {         "Makefile",                 "Makefile"   }, 
+	                                                                        {         "image.png",                "image"      }, 
+	                                                                        {         "backup.tar.bz2",           "backup"     },
+	                                                                      };
+	for (auto &p : TestsAndExpectedResults) {
+		std::string temp = removeExtension(p.first);
 		if (temp != p.second)
 			return false;
 	}
@@ -130,11 +153,8 @@ bool testBaseFilenameNoExtension() {
 	                                                                      };
 	for (auto &p : TestsAndExpectedResults) {
 		std::string temp = baseFilenameNoExtension(p.first);
-		if (temp != p.second) {
-			std::cout << "Result: " << temp << "\n"
-			<< "Expected: " << p.second << std::endl;
+		if (temp != p.second)
 			return false;
-		}
 	}
 	return true;
 }

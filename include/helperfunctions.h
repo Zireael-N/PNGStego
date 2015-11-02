@@ -36,10 +36,13 @@ std::string addToFilename(std::string filename, const std::string &addition);
 /** Returns extension of a file, without the leading dot */
 std::string getExtension(const std::string &filename) noexcept;
 
-/** Returns the filename without directories */
+/** Returns a filename without an extension */
+std::string removeExtension(const std::string &filename) noexcept;
+
+/** Returns a filename without directories */
 std::string baseFilename(const std::string &filename) noexcept;
 
-/** Returns the filename without directories and extension */
+/** Returns a filename without directories and extension */
 std::string baseFilenameNoExtension(const std::string &filename) noexcept;
 
 /** Returns the size of a given file */
