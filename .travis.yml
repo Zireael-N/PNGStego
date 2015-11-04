@@ -8,7 +8,7 @@ script:
   - make && make test
 
 before_install:
-  - brew update || brew update
+  - brew update
   - if [[ -z $(brew ls --versions lbzip2) ]]; then brew install lbzip2; fi
   - brew outdated lbzip2 || brew upgrade lbzip2
   - if [[ -z $(brew ls --versions lzlib) ]]; then brew install lzlib; fi
