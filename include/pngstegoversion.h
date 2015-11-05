@@ -11,9 +11,9 @@
 // for compatibility with the .rc file
 #define __PNGSTEGO_VER_MANOR   1
 #define __PNGSTEGO_VER_MINOR   0
-#define __PNGSTEGO_VER_RELEASE 3
-#define __PNGSTEGO_VER_STRING  "1.0.3"
-#define __PNGSTEGO_VER_FULL    10003
+#define __PNGSTEGO_VER_RELEASE 4
+#define __PNGSTEGO_VER_STRING  "1.0.4"
+#define __PNGSTEGO_VER_FULL    10004
 
 // define __PNGSTEGO_VER_KEEP_DEFINES within the .rc file
 #ifndef __PNGSTEGO_VER_KEEP_DEFINES
