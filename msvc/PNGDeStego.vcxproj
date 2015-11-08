@@ -26,6 +26,7 @@
     <ClCompile Include="..\src\pngwrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\bitmap.h" />
     <ClInclude Include="..\include\byteencryption.h" />
     <ClInclude Include="..\include\bz2compression.h" />
     <ClInclude Include="..\include\helperfunctions.h" />
