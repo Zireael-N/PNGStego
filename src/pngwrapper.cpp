@@ -46,6 +46,13 @@
 #include <boost/random/uniform_int_distribution.hpp>
 
 /*
+  A header containing functions that
+  perform endianness conversion.
+  https://en.wikipedia.org/wiki/Endianness
+*/
+#include <boost/endian/conversion.hpp>
+
+/*
   Boost::Nowide provides UTF-8 support on Windows
   Windows, by default, uses UTF-16 for Unicode.
 */
@@ -479,6 +486,7 @@ namespace PNGStego {
 				}
 				PixelPos += offset(gen);
 			}
+			boost::endian::native_to_little_inplace(dataSize);
 			for (int i = 0; i < 8 * SIZE_BYTES; ++i) {
 				if (dataSize & (1 << i)) {
 					pixels[PixelPos].blue |= 1;
@@ -555,6 +563,7 @@ namespace PNGStego {
 			dataSize |= ((pixels[PixelPos].blue & 1) << i);
 			PixelPos += offset(gen);
 		}
+		boost::endian::little_to_native_inplace(dataSize);
 
 		if (dataSize <= capacity(offsetSeed)) {
 
