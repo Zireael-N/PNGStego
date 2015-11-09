@@ -16,7 +16,7 @@ bool testRemoveExtension();
 bool testAddToFilename();
 bool testBaseFilename();
 bool testBaseFilenameNoExtension();
-bool testCutLineEndings();
+bool testRemoveLineEndings();
 bool testEndsWith();
 bool testStringToVector();
 
@@ -38,7 +38,7 @@ int main() {
 	TEST("Testing addToFilename()...: ", testAddToFilename)
 	TEST("Testing baseFilename()...: ", testBaseFilename)
 	TEST("Testing baseFilenameNoExtension()...: ", testBaseFilenameNoExtension)
-	TEST("Testing cutLineEndings()...: ", testCutLineEndings)
+	TEST("Testing removeLineEndings()...: ", testRemoveLineEndings)
 	TEST("Testing endsWith()...: ", testEndsWith)
 	TEST("Testing stringToVector()...: ", testStringToVector)
 
@@ -159,7 +159,7 @@ bool testBaseFilenameNoExtension() {
 	return true;
 }
 
-bool testCutLineEndings() {
+bool testRemoveLineEndings() {
 	const std::pair<std::string, std::string> TestsAndExpectedResults[] = {
 	                                                                        { "",                 ""            },
 	                                                                        { "\r\n\r\n\r\n",     ""            },
@@ -170,7 +170,7 @@ bool testCutLineEndings() {
 	                                                                      };
 	for (auto &p : TestsAndExpectedResults) {
 		std::string temp = p.first;
-		cutLineEndings(temp);
+		removeLineEndings(temp);
 		if (temp != p.second)
 			return false;
 	}
