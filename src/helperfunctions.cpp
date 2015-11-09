@@ -120,7 +120,7 @@ namespace PNGStego {
 #endif
 	}
 
-	void cutLineEndings(std::string &source) noexcept {
+	void removeLineEndings(std::string &source) noexcept {
 		if (source.size() == 0) // empty string
 			return;
 		size_t pos = source.size() - 1;

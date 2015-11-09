@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
 		boost::nowide::cout << "Enter the file name of the container: ";
 		std::getline(boost::nowide::cin, containerFilename);
 		
-		PNGStego::cutLineEndings(containerFilename);
+		PNGStego::removeLineEndings(containerFilename);
 	}
 	if (argc > 2) {
 		dataFilename = argv[2];
@@ -85,7 +85,7 @@ int main(int argc, char **argv) {
 		boost::nowide::cout << "Enter the name of the file you wish to embed: ";
 		std::getline(boost::nowide::cin, dataFilename);
 		
-		PNGStego::cutLineEndings(dataFilename);
+		PNGStego::removeLineEndings(dataFilename);
 	}
 	if (argc > 3) {
 		key = argv[3];
@@ -94,7 +94,7 @@ int main(int argc, char **argv) {
 		boost::nowide::cout << "Enter the key: ";
 		std::getline(boost::nowide::cin, key);
 		
-		PNGStego::cutLineEndings(key);
+		PNGStego::removeLineEndings(key);
 	}
 
 	try {

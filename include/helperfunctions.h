@@ -52,7 +52,7 @@ std::ifstream::pos_type fileSize(const std::string &filename);
 std::vector<uint8_t> stringToVector(const std::string &source) noexcept;
 
 /** If the source ends with '\r' and '\n' symbols, remove them */
-void cutLineEndings(std::string &source) noexcept;
+void removeLineEndings(std::string &source) noexcept;
 
 /** Returns whether str2 is the ending of the str1 */
 bool endsWith(const std::string &str1, const std::string &str2) noexcept;
