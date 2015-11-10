@@ -5,8 +5,8 @@
 //           http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef __BYTE_ENCRYPTION_H
-#define __BYTE_ENCRYPTION_H
+#ifndef __PNGSTEGO_BYTE_ENCRYPTION_H
+#define __PNGSTEGO_BYTE_ENCRYPTION_H
 
 #include <vector>
 #include <array>

@@ -5,8 +5,8 @@
 //           http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef __HELPER_FUNCTIONS_H
-#define __HELPER_FUNCTIONS_H
+#ifndef __PNGSTEGO_HELPER_FUNCTIONS_H
+#define __PNGSTEGO_HELPER_FUNCTIONS_H
 
 #include <string>
 #include <vector>

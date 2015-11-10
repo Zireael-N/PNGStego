@@ -5,8 +5,8 @@
 //           http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef __BZ2_COMPRESSION_H
-#define __BZ2_COMPRESSION_H
+#ifndef __PNGSTEGO_BZ2_COMPRESSION_H
+#define __PNGSTEGO_BZ2_COMPRESSION_H
 
 #include <vector>
 #include <cstdint>

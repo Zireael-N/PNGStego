@@ -5,8 +5,8 @@
 //           http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef __PNG_WRAPPER_H
-#define __PNG_WRAPPER_H
+#ifndef __PNGSTEGO_PNG_WRAPPER_H
+#define __PNGSTEGO_PNG_WRAPPER_H
 
 #include <iostream>
 #include <string>

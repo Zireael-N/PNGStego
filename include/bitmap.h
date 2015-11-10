@@ -5,8 +5,8 @@
 //           http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef __BITMAP_H
-#define __BITMAP_H
+#ifndef __PNGSTEGO_BITMAP_H
+#define __PNGSTEGO_BITMAP_H
 
 #include <cstdint>
 
