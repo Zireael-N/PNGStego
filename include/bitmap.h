@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2015 Zireael (zireael dot nk at gmail dot com)
+// Copyright (C) 2015-2016 Zireael (zireael dot nk at gmail dot com)
 //  Distributed under the Boost Software License, Version 1.0.
 //       (See accompanying file LICENSE.md or copy at
 //           http://www.boost.org/LICENSE_1_0.txt)
