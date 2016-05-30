@@ -20,6 +20,7 @@ OBJS = $(addprefix $(TEMPDIR), $(filter-out main-stego.o main-destego.o, $(notdi
 
 ENCODER = PNGStego
 DECODER = PNGDeStego
+TESTEXECUTABLE = test
 
 ISCYGWIN = 0
 ISMINGW = 0
@@ -28,7 +29,7 @@ ISCMDEXE = 0
 ifeq ($(OS),Windows_NT)
 	ENCODER := $(ENCODER).exe
 	DECODER := $(DECODER).exe
-	TESTS = $(TESTSRCS:.cpp=.exe)
+	TESTEXECUTABLE := $(TESTEXECUTABLE).exe
 	VERSIONRES = $(TEMPDIR)version.res
 ifeq ($(PWD),)
 	# ! cmd.exe !
@@ -137,45 +138,24 @@ endif
 
 
 TESTSDIR = tests/
-TESTSRCS = $(wildcard $(TESTSDIR)*.cpp)
-TESTS = $(TESTSRCS:.cpp=.exe)
-TESTDEPS = $(addprefix $(TEMPDIR), $(notdir $(TESTSRCS:.cpp=.d)))
 
 # tests are not for distribution
 # no reason to statically link on any OS
 TLIBS = $(filter-out -static -static-libstdc++ -static-libgcc, $(LIBS))
 
+.PHONY: clean-test
+
 # convert forward slashes
 # to backslashes if needed
 clean-test:
 ifeq ($(ISCMDEXE),1)
-	$(RM) $(subst /,\,$(TESTS) $(TESTDEPS))
+	$(RM) $(subst /,\,$(TESTSDIR)$(TESTEXECUTABLE))
 else
-	$(RM) $(TESTS) $(TESTDEPS)
+	$(RM) $(TESTSDIR)$(TESTEXECUTABLE)
 endif
 
--include $(TESTDEPS)
+$(TESTSDIR)$(TESTEXECUTABLE): $(OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $(TESTSDIR)tests.cpp $^ $(LDFLAGS) $(TLIBS)
 
-# for tests that are linked with objects
-# with the same name, but without "test-"
-$(TESTSDIR)%.exe: $(TESTSDIR)%.cpp $(OBJS)
-	$(CXX) $(CXXFLAGS) -MM -MT $@ -MF $(TEMPDIR)$(notdir $(@:.exe=.d)) $<
-	$(CXX) $(CXXFLAGS) -o $@ $< $(TEMPDIR)$(notdir $(subst test-,,$(subst exe,o,$@))) $(LDFLAGS) $(TLIBS)
-
-# this one also needs to be linked
-# with helperfunctions.o
-$(TESTSDIR)test-byteencryption.exe: $(TESTSDIR)test-byteencryption.cpp $(OBJS)
-	$(CXX) $(CXXFLAGS) -MM -MT $@ -MF $(TEMPDIR)$(notdir $(@:.exe=.d)) $<
-	$(CXX) $(CXXFLAGS) -o $@ $< $(TEMPDIR)byteencryption.o $(TEMPDIR)helperfunctions.o $(LDFLAGS) $(TLIBS)
-
-# this one needs to be
-# linked with everything
-$(TESTSDIR)test-steganography.exe: $(TESTSDIR)test-steganography.cpp $(OBJS)
-	$(CXX) $(CXXFLAGS) -MM -MT $@ -MF $(TEMPDIR)$(notdir $(@:.exe=.d)) $<
-	$(CXX) $(CXXFLAGS) -o $@ $< $(OBJS) $(LDFLAGS) $(TLIBS)
-
-test: $(TESTS)
-	$(TESTSDIR)test-helperfunctions.exe
-	$(TESTSDIR)test-bz2compression.exe
-	$(TESTSDIR)test-byteencryption.exe
-	$(TESTSDIR)test-steganography.exe
+test: $(TESTSDIR)$(TESTEXECUTABLE)
+	$(TESTSDIR)$(TESTEXECUTABLE)
