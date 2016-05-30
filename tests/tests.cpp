@@ -43,12 +43,12 @@ int main() {
 	TEST("Testing double encryption with precomputed data...: ", testDoubleEncryption)
 	TEST("Testing double decryption with precomputed data...: ", testDoubleDecryption)
 	TEST("Testing (de-/en-)cryption with random data...: ", testEncryptionWithRandomData)
-    
-    TEST("\nTesting compress() with precomputed data...: ", testCompress)
-    TEST("Testing decompress() with precomputed data...: ", testDecompress)
-    TEST("Testing (de-)compress() with random data...: ", testCompressionWithRandomData)
 
-    TEST("\nTesting getExtension()...: ", testGetExtension)
+	TEST("\nTesting compress() with precomputed data...: ", testCompress)
+	TEST("Testing decompress() with precomputed data...: ", testDecompress)
+	TEST("Testing (de-)compress() with random data...: ", testCompressionWithRandomData)
+
+	TEST("\nTesting getExtension()...: ", testGetExtension)
 	TEST("Testing removeExtension()...: ", testRemoveExtension)
 	TEST("Testing addToFilename()...: ", testAddToFilename)
 	TEST("Testing baseFilename()...: ", testBaseFilename)
