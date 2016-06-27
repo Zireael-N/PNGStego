@@ -5,7 +5,7 @@
 //           http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "bz2compression.h"
+#include "compression.h"
 
 #ifdef _MSC_VER
 #pragma warning(push)

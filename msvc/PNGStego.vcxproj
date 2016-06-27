@@ -19,17 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\byteencryption.cpp" />
-    <ClCompile Include="..\src\bz2compression.cpp" />
-    <ClCompile Include="..\src\helperfunctions.cpp" />
+    <ClCompile Include="..\src\encryption.cpp" />
+    <ClCompile Include="..\src\compression.cpp" />
+    <ClCompile Include="..\src\helpers.cpp" />
     <ClCompile Include="..\src\main-stego.cpp" />
     <ClCompile Include="..\src\pngwrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\bitmap.h" />
-    <ClInclude Include="..\include\byteencryption.h" />
-    <ClInclude Include="..\include\bz2compression.h" />
-    <ClInclude Include="..\include\helperfunctions.h" />
+    <ClInclude Include="..\include\encryption.h" />
+    <ClInclude Include="..\include\compression.h" />
+    <ClInclude Include="..\include\helpers.h" />
     <ClInclude Include="..\include\pngstegoversion.h" />
     <ClInclude Include="..\include\pngwrapper.h" />
   </ItemGroup>

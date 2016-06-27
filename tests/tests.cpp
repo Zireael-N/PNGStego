@@ -13,9 +13,9 @@
 #include <tuple>
 #include <cstring>
 #include "pngwrapper.h"
-#include "bz2compression.h"
-#include "byteencryption.h"
-#include "helperfunctions.h"
+#include "compression.h"
+#include "encryption.h"
+#include "helpers.h"
 #include "constants.h"
 
 #define TEST(name, fn)  std::cout << name;             \

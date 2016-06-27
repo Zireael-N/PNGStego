@@ -13,7 +13,7 @@
 #include <clocale>
 
 /*
-  Boost::Nowide provides UTF-8 support on Windows
+  Boost::Nowide provides UTF-8 support on Windows.
   Windows, by default, uses UTF-16 for Unicode.
 */
 #ifdef _WIN32
@@ -31,10 +31,10 @@ namespace boost {
 }
 #endif
 
-#include "bz2compression.h"
-#include "byteencryption.h"
+#include "compression.h"
+#include "encryption.h"
 #include "pngwrapper.h"
-#include "helperfunctions.h"
+#include "helpers.h"
 #include "pngstegoversion.h"
 
 int main(int argc, char **argv) {

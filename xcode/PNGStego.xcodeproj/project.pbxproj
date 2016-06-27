@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		014BE8F01BCB010E00C3DA70 /* byteencryption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EB1BCB010E00C3DA70 /* byteencryption.cpp */; };
-		014BE8F11BCB010E00C3DA70 /* bz2compression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EC1BCB010E00C3DA70 /* bz2compression.cpp */; };
-		014BE8F21BCB010E00C3DA70 /* helperfunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8ED1BCB010E00C3DA70 /* helperfunctions.cpp */; };
+		014BE8F01BCB010E00C3DA70 /* encryption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EB1BCB010E00C3DA70 /* encryption.cpp */; };
+		014BE8F11BCB010E00C3DA70 /* compression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EC1BCB010E00C3DA70 /* compression.cpp */; };
+		014BE8F21BCB010E00C3DA70 /* helpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8ED1BCB010E00C3DA70 /* helpers.cpp */; };
 		014BE8F31BCB010E00C3DA70 /* main-stego.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EE1BCB010E00C3DA70 /* main-stego.cpp */; };
 		014BE8F41BCB010E00C3DA70 /* pngwrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EF1BCB010E00C3DA70 /* pngwrapper.cpp */; };
 		018525C11BCB056F003484E8 /* main-destego.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 018525BF1BCB0566003484E8 /* main-destego.cpp */; };
-		018525C21BCB0577003484E8 /* byteencryption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EB1BCB010E00C3DA70 /* byteencryption.cpp */; };
-		018525C31BCB0577003484E8 /* bz2compression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EC1BCB010E00C3DA70 /* bz2compression.cpp */; };
-		018525C41BCB0577003484E8 /* helperfunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8ED1BCB010E00C3DA70 /* helperfunctions.cpp */; };
+		018525C21BCB0577003484E8 /* encryption.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EB1BCB010E00C3DA70 /* encryption.cpp */; };
+		018525C31BCB0577003484E8 /* compression.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EC1BCB010E00C3DA70 /* compression.cpp */; };
+		018525C41BCB0577003484E8 /* helpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8ED1BCB010E00C3DA70 /* helpers.cpp */; };
 		018525C51BCB057C003484E8 /* pngwrapper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 014BE8EF1BCB010E00C3DA70 /* pngwrapper.cpp */; };
 /* End PBXBuildFile section */
 
@@ -41,13 +41,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		014BE8E71BCB00F200C3DA70 /* byteencryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = byteencryption.h; path = ../include/byteencryption.h; sourceTree = "<group>"; };
-		014BE8E81BCB00F200C3DA70 /* bz2compression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bz2compression.h; path = ../include/bz2compression.h; sourceTree = "<group>"; };
-		014BE8E91BCB00F200C3DA70 /* helperfunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = helperfunctions.h; path = ../include/helperfunctions.h; sourceTree = "<group>"; };
+		014BE8E71BCB00F200C3DA70 /* encryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = encryption.h; path = ../include/encryption.h; sourceTree = "<group>"; };
+		014BE8E81BCB00F200C3DA70 /* compression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = compression.h; path = ../include/compression.h; sourceTree = "<group>"; };
+		014BE8E91BCB00F200C3DA70 /* helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = helpers.h; path = ../include/helpers.h; sourceTree = "<group>"; };
 		014BE8EA1BCB00F200C3DA70 /* pngwrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pngwrapper.h; path = ../include/pngwrapper.h; sourceTree = "<group>"; };
-		014BE8EB1BCB010E00C3DA70 /* byteencryption.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = byteencryption.cpp; path = ../src/byteencryption.cpp; sourceTree = "<group>"; };
-		014BE8EC1BCB010E00C3DA70 /* bz2compression.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = bz2compression.cpp; path = ../src/bz2compression.cpp; sourceTree = "<group>"; };
-		014BE8ED1BCB010E00C3DA70 /* helperfunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = helperfunctions.cpp; path = ../src/helperfunctions.cpp; sourceTree = "<group>"; };
+		014BE8EB1BCB010E00C3DA70 /* encryption.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = encryption.cpp; path = ../src/encryption.cpp; sourceTree = "<group>"; };
+		014BE8EC1BCB010E00C3DA70 /* compression.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = compression.cpp; path = ../src/compression.cpp; sourceTree = "<group>"; };
+		014BE8ED1BCB010E00C3DA70 /* helpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = helpers.cpp; path = ../src/helpers.cpp; sourceTree = "<group>"; };
 		014BE8EE1BCB010E00C3DA70 /* main-stego.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "main-stego.cpp"; path = "../src/main-stego.cpp"; sourceTree = "<group>"; };
 		014BE8EF1BCB010E00C3DA70 /* pngwrapper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pngwrapper.cpp; path = ../src/pngwrapper.cpp; sourceTree = "<group>"; };
 		014E95981BD773F2002FC8AF /* pngstegoversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pngstegoversion.h; path = ../include/pngstegoversion.h; sourceTree = "<group>"; };
@@ -78,9 +78,9 @@
 			isa = PBXGroup;
 			children = (
 				018525BF1BCB0566003484E8 /* main-destego.cpp */,
-				014BE8EB1BCB010E00C3DA70 /* byteencryption.cpp */,
-				014BE8EC1BCB010E00C3DA70 /* bz2compression.cpp */,
-				014BE8ED1BCB010E00C3DA70 /* helperfunctions.cpp */,
+				014BE8EB1BCB010E00C3DA70 /* encryption.cpp */,
+				014BE8EC1BCB010E00C3DA70 /* compression.cpp */,
+				014BE8ED1BCB010E00C3DA70 /* helpers.cpp */,
 				014BE8EE1BCB010E00C3DA70 /* main-stego.cpp */,
 				014BE8EF1BCB010E00C3DA70 /* pngwrapper.cpp */,
 			);
@@ -91,9 +91,9 @@
 			isa = PBXGroup;
 			children = (
 				014E95981BD773F2002FC8AF /* pngstegoversion.h */,
-				014BE8E71BCB00F200C3DA70 /* byteencryption.h */,
-				014BE8E81BCB00F200C3DA70 /* bz2compression.h */,
-				014BE8E91BCB00F200C3DA70 /* helperfunctions.h */,
+				014BE8E71BCB00F200C3DA70 /* encryption.h */,
+				014BE8E81BCB00F200C3DA70 /* compression.h */,
+				014BE8E91BCB00F200C3DA70 /* helpers.h */,
 				014BE8EA1BCB00F200C3DA70 /* pngwrapper.h */,
 			);
 			name = Headers;
@@ -195,10 +195,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				018525C51BCB057C003484E8 /* pngwrapper.cpp in Sources */,
-				018525C21BCB0577003484E8 /* byteencryption.cpp in Sources */,
-				018525C41BCB0577003484E8 /* helperfunctions.cpp in Sources */,
+				018525C21BCB0577003484E8 /* encryption.cpp in Sources */,
+				018525C41BCB0577003484E8 /* helpers.cpp in Sources */,
 				018525C11BCB056F003484E8 /* main-destego.cpp in Sources */,
-				018525C31BCB0577003484E8 /* bz2compression.cpp in Sources */,
+				018525C31BCB0577003484E8 /* compression.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,9 +207,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				014BE8F41BCB010E00C3DA70 /* pngwrapper.cpp in Sources */,
-				014BE8F01BCB010E00C3DA70 /* byteencryption.cpp in Sources */,
-				014BE8F21BCB010E00C3DA70 /* helperfunctions.cpp in Sources */,
-				014BE8F11BCB010E00C3DA70 /* bz2compression.cpp in Sources */,
+				014BE8F01BCB010E00C3DA70 /* encryption.cpp in Sources */,
+				014BE8F21BCB010E00C3DA70 /* helpers.cpp in Sources */,
+				014BE8F11BCB010E00C3DA70 /* compression.cpp in Sources */,
 				014BE8F31BCB010E00C3DA70 /* main-stego.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -22,8 +22,8 @@
 #pragma warning(pop)
 #endif
 
-#include "byteencryption.h"
-#include "helperfunctions.h"
+#include "encryption.h"
+#include "helpers.h"
 
 namespace PNGStego {
 namespace Encryption {

@@ -5,9 +5,9 @@
 //           http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "bz2compression.h"
-#include "byteencryption.h"
-#include "helperfunctions.h"
+#include "compression.h"
+#include "encryption.h"
+#include "helpers.h"
 #include "pngwrapper.h"
 #include "pngstegoversion.h"
 #include <png.h>
